@@ -3,9 +3,9 @@
 <table>
   <base>CRM/Team</base>
   <class>Contact</class>
-  <name>civicrm_contact</name>
-  <comment>FIXME</comment>
-  <add>4.4</add>
+  <name>civicrm_team_contact</name>
+  <comment>Contact Membership in a Team</comment>
+  <add>4.7</add>
   <log>true</log>
 
   <field>
@@ -13,7 +13,7 @@
     <type>int unsigned</type>
     <required>true</required>
     <comment>Unique Contact ID</comment>
-    <add>4.4</add>
+    <add>4.7</add>
   </field>
   <primaryKey>
     <name>id</name>
@@ -21,17 +21,53 @@
   </primaryKey>
 
   <field>
+    <name>team_id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to civicrm_team</comment>
+    <add>4.7</add>
+    <pseudoconstant>
+      <table>civicrm_group</table>
+      <keyColumn>id</keyColumn>
+      <labelColumn>team_name</labelColumn>
+    </pseudoconstant>
+  </field>
+  <foreignKey>
+    <name>team_id</name>
+    <table>team_group</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
     <name>contact_id</name>
     <type>int unsigned</type>
     <comment>FK to Contact</comment>
-    <add>4.4</add>
+    <add>4.7</add>
   </field>
   <foreignKey>
     <name>contact_id</name>
     <table>civicrm_contact</table>
     <key>id</key>
-    <add>4.4</add>
+    <add>4.7</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
 
+  <field>
+    <name>date_added</name>
+    <type>timestamp</type>
+    <required>false</required>
+    <title>Date Added</title>
+    <comment>Date on which the Contact was added to the team</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>status</name>
+    <type>boolean</type>
+    <title>Status</title>
+    <comment>Indicates if the contact is currently participating in the Team.</comment>
+    <add>4.7</add>
+  </field>
 </table>

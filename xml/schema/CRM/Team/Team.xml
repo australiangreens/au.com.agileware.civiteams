@@ -4,8 +4,8 @@
   <base>CRM/Team</base>
   <class>Team</class>
   <name>civicrm_team</name>
-  <comment>FIXME</comment>
-  <add>4.4</add>
+  <comment>Basic Team definition</comment>
+  <add>4.7</add>
   <log>true</log>
 
   <field>
@@ -13,7 +13,7 @@
     <type>int unsigned</type>
     <required>true</required>
     <comment>Unique Team ID</comment>
-    <add>4.4</add>
+    <add>4.7</add>
   </field>
   <primaryKey>
     <name>id</name>
@@ -21,17 +21,65 @@
   </primaryKey>
 
   <field>
-    <name>contact_id</name>
+    <name>team_name</name>
+    <type>varchar</type>
+    <title>Team Name</title>
+    <length>255</length>
+    <comment>Human-redable team name.</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>domain_id</name>
     <type>int unsigned</type>
-    <comment>FK to Contact</comment>
-    <add>4.4</add>
+    <required>false</required>
+    <comment>FK to domain table</comment>
+    <add>4.7</add>
   </field>
   <foreignKey>
-    <name>contact_id</name>
-    <table>civicrm_contact</table>
+    <name>domain_id</name>
+    <table>civicrm_domain</table>
     <key>id</key>
-    <add>4.4</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
+
+  <field>
+    <name>created</name>
+    <type>timestamp</type>
+    <required>false</required>
+    <title>Created on</title>
+    <comment>Date on which the Team was created</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>created_id</name>
+    <type>int unsigned</type>
+    <title>Team Created By</title>
+    <comment>FK to contact table.</comment>
+    <add>4.7</add>
+  </field>
+  <foreignKey>
+    <name>created_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>SET NULL</onDelete>
+  </foreignKey>
+  
+  <field>
+    <name>is_active</name>
+    <type>boolean</type>
+    <title>Enabled</title>
+    <comment>Is this Team active?</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>data</name>
+    <type>text</type>
+    <required>false</required>
+    <comment>Serialised JSON of additional configuration.</comment>
+  </field>
 
 </table>
