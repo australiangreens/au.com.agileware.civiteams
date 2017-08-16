@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
-<extension key="au.com.agileware.mailingteams" type="module">
-  <file>mailingteams</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+<extension key="au.com.agileware.civiteams" type="module">
+  <file>civiteams</file>
+  <name>CiviTeams</name>
+  <description>Adds support functionality for teams of groups to use plugin-defined ACLs</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Agileware</author>
     <email>support@agileware.com.au</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://FIXME</url>
-    <url desc="Documentation">http://FIXME</url>
-    <url desc="Support">http://FIXME</url>
+    <url desc="Main Extension Page">https://github.com/agileware/au.com.agileware.civiteams</url>
+    <url desc="Documentation">https://github.com/agileware/au.com.agileware.civiteams/wiki</url>
+    <url desc="Support">https://github.com/agileware/au.com.agileware/civiteams/issues</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
   <releaseDate>2017-08-11</releaseDate>
