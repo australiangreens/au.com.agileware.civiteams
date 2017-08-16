@@ -34,7 +34,7 @@
   </field>
   <foreignKey>
     <name>team_id</name>
-    <table>team_group</table>
+    <table>civicrm_team</table>
     <key>id</key>
     <add>4.7</add>
     <onDelete>CASCADE</onDelete>
@@ -43,6 +43,7 @@
   <field>
     <name>contact_id</name>
     <type>int unsigned</type>
+    <required>true</required>
     <comment>FK to Contact</comment>
     <add>4.7</add>
   </field>
@@ -67,6 +68,7 @@
     <name>status</name>
     <type>boolean</type>
     <title>Status</title>
+    <required>true</required>
     <comment>Indicates if the contact is currently participating in the Team.</comment>
     <add>4.7</add>
   </field>
