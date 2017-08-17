@@ -1,4 +1,6 @@
+DROP TABLE IF EXISTS `civicrm_team_contact`;
 DROP TABLE IF EXISTS `civicrm_team`;
+
 -- /*******************************************************
 -- *
 -- * civicrm_team
@@ -19,7 +21,6 @@ CREATE TABLE `civicrm_team` (
      CONSTRAINT FK_civicrm_team_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL  
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `civicrm_team_contact`;
 -- /*******************************************************
 -- *
 -- * civicrm_team_contact
