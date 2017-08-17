@@ -131,7 +131,7 @@ class CRM_Team_DAO_Contact extends CRM_Core_DAO {
           'localizable' => 0,
           'FKClassName' => 'CRM_Team_DAO_Team',
           'pseudoconstant' => array(
-            'table' => 'civicrm_group',
+            'table' => 'civicrm_team',
             'keyColumn' => 'id',
             'labelColumn' => 'team_name',
           )
