@@ -125,6 +125,15 @@ function civiteams_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 }
 
 /**
+ * Implements hook_civicrm_entityTypes().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
+ */
+function civiteams_civicrm_entityTypes(&$entityTypes) {
+  _civiteams_civix_civicrm_entityTypes($entityTypes);
+}
+
+/**
  * Functions below this ship commented out. Uncomment as required.
  *
 
@@ -153,3 +162,4 @@ function civiteams_civicrm_navigationMenu(&$menu) {
   ));
   _civiteams_civix_navigationMenu($menu);
 } // */
+
