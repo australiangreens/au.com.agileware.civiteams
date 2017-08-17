@@ -114,14 +114,14 @@ function _civiteams_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
 }
 
 /**
- * @return CRM_Civiteams_Upgrader
+ * @return CRM_Team_Upgrader
  */
 function _civiteams_civix_upgrader() {
-  if (!file_exists(__DIR__.'/CRM/Civiteams/Upgrader.php')) {
+  if (!file_exists(__DIR__.'/CRM/Team/Upgrader.php')) {
     return NULL;
   }
   else {
-    return CRM_Civiteams_Upgrader_Base::instance();
+    return CRM_Team_Upgrader_Base::instance();
   }
 }
 
