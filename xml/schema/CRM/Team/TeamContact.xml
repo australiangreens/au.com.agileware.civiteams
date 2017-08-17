@@ -2,7 +2,7 @@
 
 <table>
   <base>CRM/Team</base>
-  <class>Contact</class>
+  <class>TeamContact</class>
   <name>civicrm_team_contact</name>
   <comment>Contact Membership in a Team</comment>
   <add>4.7</add>
@@ -12,7 +12,7 @@
     <name>id</name>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>Unique Contact ID</comment>
+    <comment>Unique TeamContact ID</comment>
     <add>4.7</add>
   </field>
   <primaryKey>

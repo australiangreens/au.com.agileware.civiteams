@@ -35,9 +35,9 @@
 require_once 'CRM/Core/DAO.php';
 require_once 'CRM/Utils/Type.php';
 /**
- * CRM_Team_DAO_Contact constructor.
+ * CRM_Team_DAO_TeamContact constructor.
  */
-class CRM_Team_DAO_Contact extends CRM_Core_DAO {
+class CRM_Team_DAO_TeamContact extends CRM_Core_DAO {
   /**
    * Static instance to hold the table name.
    *
@@ -117,7 +117,7 @@ class CRM_Team_DAO_Contact extends CRM_Core_DAO {
           'required' => true,
           'table_name' => 'civicrm_team_contact',
           'entity' => 'Contact',
-          'bao' => 'CRM_Team_DAO_Contact',
+          'bao' => 'CRM_Team_DAO_TeamContact',
           'localizable' => 0,
         ) ,
         'team_id' => array(
@@ -127,7 +127,7 @@ class CRM_Team_DAO_Contact extends CRM_Core_DAO {
           'required' => true,
           'table_name' => 'civicrm_team_contact',
           'entity' => 'Contact',
-          'bao' => 'CRM_Team_DAO_Contact',
+          'bao' => 'CRM_Team_DAO_TeamContact',
           'localizable' => 0,
           'FKClassName' => 'CRM_Team_DAO_Team',
           'pseudoconstant' => array(
@@ -143,7 +143,7 @@ class CRM_Team_DAO_Contact extends CRM_Core_DAO {
           'required' => true,
           'table_name' => 'civicrm_team_contact',
           'entity' => 'Contact',
-          'bao' => 'CRM_Team_DAO_Contact',
+          'bao' => 'CRM_Team_DAO_TeamContact',
           'localizable' => 0,
           'FKClassName' => 'CRM_Contact_DAO_Contact',
         ) ,
@@ -155,7 +155,7 @@ class CRM_Team_DAO_Contact extends CRM_Core_DAO {
           'required' => false,
           'table_name' => 'civicrm_team_contact',
           'entity' => 'Contact',
-          'bao' => 'CRM_Team_DAO_Contact',
+          'bao' => 'CRM_Team_DAO_TeamContact',
           'localizable' => 0,
         ) ,
         'status' => array(
@@ -166,7 +166,7 @@ class CRM_Team_DAO_Contact extends CRM_Core_DAO {
           'required' => true,
           'table_name' => 'civicrm_team_contact',
           'entity' => 'Contact',
-          'bao' => 'CRM_Team_DAO_Contact',
+          'bao' => 'CRM_Team_DAO_TeamContact',
           'localizable' => 0,
         ) ,
       );
