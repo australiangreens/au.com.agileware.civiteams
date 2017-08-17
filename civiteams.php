@@ -1,14 +1,14 @@
 <?php
 
-require_once 'mailingteams.civix.php';
+require_once 'civiteams.civix.php';
 
 /**
  * Implements hook_civicrm_config().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
  */
-function mailingteams_civicrm_config(&$config) {
-  _mailingteams_civix_civicrm_config($config);
+function civiteams_civicrm_config(&$config) {
+  _civiteams_civix_civicrm_config($config);
 }
 
 /**
@@ -18,8 +18,8 @@ function mailingteams_civicrm_config(&$config) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
  */
-function mailingteams_civicrm_xmlMenu(&$files) {
-  _mailingteams_civix_civicrm_xmlMenu($files);
+function civiteams_civicrm_xmlMenu(&$files) {
+  _civiteams_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -27,8 +27,8 @@ function mailingteams_civicrm_xmlMenu(&$files) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
-function mailingteams_civicrm_install() {
-  _mailingteams_civix_civicrm_install();
+function civiteams_civicrm_install() {
+  _civiteams_civix_civicrm_install();
 }
 
 /**
@@ -36,8 +36,8 @@ function mailingteams_civicrm_install() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
  */
-function mailingteams_civicrm_uninstall() {
-  _mailingteams_civix_civicrm_uninstall();
+function civiteams_civicrm_uninstall() {
+  _civiteams_civix_civicrm_uninstall();
 }
 
 /**
@@ -45,8 +45,8 @@ function mailingteams_civicrm_uninstall() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
-function mailingteams_civicrm_enable() {
-  _mailingteams_civix_civicrm_enable();
+function civiteams_civicrm_enable() {
+  _civiteams_civix_civicrm_enable();
 }
 
 /**
@@ -54,8 +54,8 @@ function mailingteams_civicrm_enable() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
  */
-function mailingteams_civicrm_disable() {
-  _mailingteams_civix_civicrm_disable();
+function civiteams_civicrm_disable() {
+  _civiteams_civix_civicrm_disable();
 }
 
 /**
@@ -70,8 +70,8 @@ function mailingteams_civicrm_disable() {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
  */
-function mailingteams_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _mailingteams_civix_civicrm_upgrade($op, $queue);
+function civiteams_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
+  return _civiteams_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -82,8 +82,8 @@ function mailingteams_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
  */
-function mailingteams_civicrm_managed(&$entities) {
-  _mailingteams_civix_civicrm_managed($entities);
+function civiteams_civicrm_managed(&$entities) {
+  _civiteams_civix_civicrm_managed($entities);
 }
 
 /**
@@ -97,8 +97,8 @@ function mailingteams_civicrm_managed(&$entities) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
  */
-function mailingteams_civicrm_caseTypes(&$caseTypes) {
-  _mailingteams_civix_civicrm_caseTypes($caseTypes);
+function civiteams_civicrm_caseTypes(&$caseTypes) {
+  _civiteams_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -111,8 +111,8 @@ function mailingteams_civicrm_caseTypes(&$caseTypes) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
  */
-function mailingteams_civicrm_angularModules(&$angularModules) {
-_mailingteams_civix_civicrm_angularModules($angularModules);
+function civiteams_civicrm_angularModules(&$angularModules) {
+_civiteams_civix_civicrm_angularModules($angularModules);
 }
 
 /**
@@ -120,8 +120,8 @@ _mailingteams_civix_civicrm_angularModules($angularModules);
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
  */
-function mailingteams_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _mailingteams_civix_civicrm_alterSettingsFolders($metaDataFolders);
+function civiteams_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
+  _civiteams_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -133,7 +133,7 @@ function mailingteams_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
  *
-function mailingteams_civicrm_preProcess($formName, &$form) {
+function civiteams_civicrm_preProcess($formName, &$form) {
 
 } // */
 
@@ -142,14 +142,14 @@ function mailingteams_civicrm_preProcess($formName, &$form) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  *
-function mailingteams_civicrm_navigationMenu(&$menu) {
-  _mailingteams_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'au.com.agileware.mailingteams')),
+function civiteams_civicrm_navigationMenu(&$menu) {
+  _civiteams_civix_insert_navigation_menu($menu, NULL, array(
+    'label' => ts('The Page', array('domain' => 'au.com.agileware.civiteams')),
     'name' => 'the_page',
     'url' => 'civicrm/the-page',
     'permission' => 'access CiviReport,access CiviContribute',
     'operator' => 'OR',
     'separator' => 0,
   ));
-  _mailingteams_civix_navigationMenu($menu);
+  _civiteams_civix_navigationMenu($menu);
 } // */
