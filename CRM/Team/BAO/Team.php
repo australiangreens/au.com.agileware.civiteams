@@ -22,6 +22,6 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
 
     CRM_Core_Error::debug_var('CRM_Team_BAO_Team::checkPermissions()::「results」', $results);
 
-    return ((is_array($results) && !in_array(FALSE, $results)) || $results);
+    return +( is_array($results) ? !in_array(FALSE, $results) : !!$results );
   }
 }

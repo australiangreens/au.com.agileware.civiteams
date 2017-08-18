@@ -133,6 +133,13 @@ function civiteams_civicrm_entityTypes(&$entityTypes) {
   _civiteams_civix_civicrm_entityTypes($entityTypes);
 }
 
+function civiteams_civicrm_team_permissions($entity_table, $entity_id, $action, $contact_id){
+  CRM_Core_Error::debug_log_message(
+    "civiteams_civicrm_team_permissions({$entity_table}, {$entity_id}, {$action}, {$contact_id})"
+  );
+  return +($action != 'view') * $contact_id;
+}
+
 /**
  * Functions below this ship commented out. Uncomment as required.
  *
