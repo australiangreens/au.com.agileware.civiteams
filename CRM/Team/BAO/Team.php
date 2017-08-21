@@ -13,15 +13,14 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
 
     $_nullObject =& CRM_Utils_Hook::$_nullObject;
 
+    $permissions = array();
+
     $results = $hook->invoke(
-      array('entity_table', 'entity_id', 'action', 'contact_id'),
-      $entity_table, $entity_id, $action, $contact_id,
-      $_nullObject, $_nullObject,
+      array('entity_table', 'entity_id', 'action', 'contact_id', 'permissions'),
+      $entity_table, $entity_id, $action, $contact_id, $permissions, $_nullObject,
       'civicrm_team_permissions'
     );
 
-    CRM_Core_Error::debug_var('CRM_Team_BAO_Team::checkPermissions()::「results」', $results);
-
-    return +( is_array($results) ? !in_array(FALSE, $results) : !!$results );
+    return !(empty($permissions) || in_array(FALSE, $permissions));
   }
 }
