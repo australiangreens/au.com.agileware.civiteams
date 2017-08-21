@@ -16,11 +16,14 @@
   </urls>
   <releaseDate>2017-08-11</releaseDate>
   <version>1.0</version>
-  <develStage>alpha</develStage>
+  <develStage>beta</develStage>
   <compatibility>
     <ver>4.7</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
+  <comments>
+    This module only provides a basic framework and UI for creating Teams.  A plugin
+    extension must be installed for Teams to become useful.
+  </comments>
   <civix>
     <namespace>CRM/Team</namespace>
   </civix>
