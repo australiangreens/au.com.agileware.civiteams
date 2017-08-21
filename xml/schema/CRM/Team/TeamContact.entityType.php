@@ -5,7 +5,7 @@ return array (
   0 => 
   array (
     'name' => 'TeamContact',
-    'class' => 'CRM_Team_DAO_Contact',
-    'table' => 'civicrm_contact',
+    'class' => 'CRM_Team_DAO_TeamContact',
+    'table' => 'civicrm_team_contact',
   ),
 );
