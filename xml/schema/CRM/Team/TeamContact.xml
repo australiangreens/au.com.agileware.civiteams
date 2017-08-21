@@ -59,6 +59,7 @@
     <name>date_added</name>
     <type>timestamp</type>
     <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
     <title>Date Added</title>
     <comment>Date on which the Contact was added to the team</comment>
     <add>4.7</add>

@@ -23,6 +23,7 @@
   <field>
     <name>team_name</name>
     <type>varchar</type>
+    <required>true</required>
     <title>Team Name</title>
     <length>255</length>
     <comment>Human-redable team name.</comment>
@@ -47,6 +48,7 @@
     <name>created</name>
     <type>timestamp</type>
     <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
     <title>Created on</title>
     <comment>Date on which the Team was created</comment>
     <add>4.7</add>
@@ -70,6 +72,8 @@
   <field>
     <name>is_active</name>
     <type>boolean</type>
+    <required>true</required>
+    <default>1</default>
     <title>Enabled</title>
     <comment>Is this Team active?</comment>
     <add>4.7</add>

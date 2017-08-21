@@ -10,11 +10,11 @@ DROP TABLE IF EXISTS `civicrm_team`;
 -- *******************************************************/
 CREATE TABLE `civicrm_team` (
      `id`         int unsigned NOT NULL AUTO_INCREMENT        COMMENT 'Unique Team ID',
-     `team_name`  varchar(255)                                COMMENT 'Human-redable team name.',
+     `team_name`  varchar(255) NOT NULL                       COMMENT 'Human-redable team name.',
      `domain_id`  int unsigned NULL                           COMMENT 'FK to domain table',
      `created`    timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which the Team was created',
      `created_id` int unsigned                                COMMENT 'FK to contact table.',
-     `is_active`  tinyint                                     COMMENT 'Is this Team active?',
+     `is_active`  tinyint      NOT NULL DEFAULT 1             COMMENT 'Is this Team active?',
      `data`       text         NULL                           COMMENT 'Serialised JSON of additional configuration.',
 PRIMARY KEY (`id`),
      CONSTRAINT FK_civicrm_team_domain_id  FOREIGN KEY (`domain_id`)  REFERENCES `civicrm_domain`(`id`)  ON DELETE CASCADE,

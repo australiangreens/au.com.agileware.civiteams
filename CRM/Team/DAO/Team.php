@@ -137,6 +137,7 @@ class CRM_Team_DAO_Team extends CRM_Core_DAO {
           'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Team Name') ,
           'description' => 'Human-redable team name.',
+          'required' => true
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
           'table_name' => 'civicrm_team',
@@ -182,6 +183,7 @@ class CRM_Team_DAO_Team extends CRM_Core_DAO {
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'title' => ts('Enabled') ,
           'description' => 'Is this Team active?',
+          'requried' => true,
           'table_name' => 'civicrm_team',
           'entity' => 'Team',
           'bao' => 'CRM_Team_DAO_Team',
