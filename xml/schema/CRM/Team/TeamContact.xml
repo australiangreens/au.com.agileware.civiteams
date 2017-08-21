@@ -73,4 +73,13 @@
     <comment>Indicates if the contact is currently participating in the Team.</comment>
     <add>4.7</add>
   </field>
+
+  <index>
+    <name>UI_team_contact_id</name>
+    <fieldName>team_id</fieldName>
+    <fieldName>contact_id</fieldName>
+    <unique>true</unique>
+    <add>4.7</add>
+  </index>
+
 </table>

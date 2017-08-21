@@ -16,7 +16,7 @@ CREATE TABLE `civicrm_team` (
      `created_id` int unsigned                                COMMENT 'FK to contact table.',
      `is_active`  tinyint      NOT NULL DEFAULT 1             COMMENT 'Is this Team active?',
      `data`       text         NULL                           COMMENT 'Serialised JSON of additional configuration.',
-PRIMARY KEY (`id`),
+     PRIMARY KEY (`id`),
      CONSTRAINT FK_civicrm_team_domain_id  FOREIGN KEY (`domain_id`)  REFERENCES `civicrm_domain`(`id`)  ON DELETE CASCADE,
      CONSTRAINT FK_civicrm_team_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL  
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -34,7 +34,8 @@ CREATE TABLE `civicrm_team_contact` (
      `contact_id` int unsigned NOT NULL                       COMMENT 'FK to Contact',
      `date_added` timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which the Contact was added to the team',
      `status`     tinyint      NOT NULL                       COMMENT 'Indicates if the contact is currently participating in the Team.',
-     PRIMARY KEY (`id`) ,
+     PRIMARY KEY (`id`),
+     UNIQUE INDEX `UI_team_contact_id` (`team_id`, `contact_id`)
      CONSTRAINT FK_civicrm_team_contact_team_id    FOREIGN KEY (`team_id`)    REFERENCES `civicrm_team`(`id`)    ON DELETE CASCADE,
      CONSTRAINT FK_civicrm_team_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
