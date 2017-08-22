@@ -1,6 +1,6 @@
 <?php
 
-class CRM_Team_BAO_Contact extends CRM_Team_DAO_Contact {
+class CRM_Team_BAO_TeamContact extends CRM_Team_DAO_TeamContact {
 
   /**
    * Create a new Contact based on array-data
