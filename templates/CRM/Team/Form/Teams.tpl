@@ -1,4 +1,3 @@
-{* HEADER *}
 <div class="crm-block crm-form-block crm-group-search-form-block">
   <div class="crm-accordion-wrapper">
     <div class="crm-accordion-header crm-master-accordion-header">Find Teams</div>
@@ -18,29 +17,24 @@
   </div>
 </div>
 
-<div id="teamContact">
-  <p>
-    <div class="form-item">
-      <table>
-        <tr class="columnheader"><th>{ts}Team Name{/ts}</th><th>{ts}Members{/ts}</th><th>{ts}From Email Addresses{/ts}</th><th>{ts}Groups{/ts}</th><th></th></tr>
-        {foreach from=$teamList item=team}
-        <tr class="{cycle values="odd-row,even-row"}">
-          <td>{$team.team_name}</td>
-          <td>{$team.members}</td>
-          <td></td>
-          <td></td>
-          <td>
-            <ul>
-              <li><a href="#">{ts}Contacts{/ts}</a></li>
-              <li><a href="#">{ts}Settings{/ts}</a></li>
-              <li><a href="#">{ts}Disable{/ts}</a></li>
-            </ul>
-          </td>
-        </tr>
+<div id="teamContact" class="crm-search-results">
+  <div class="crm-pager">{ts 1=$form.limit.html}Showing %1 entries{/ts}</div>
+  <div class="form-item">
+    <table>
+      <tr class="columnheader">{foreach from=$colHeaders item=colHeader}<th>{$colHeader}</th>{/foreach}<th>{* Operations *}</th></tr>
+      {foreach from=$teamList item=team}
+      <tr class="{cycle values="odd-row,even-row"}">
+        {foreach from=$colKeys item=ckey}
+        <td>{$team.$ckey}</td>
         {/foreach}
-      </table>
-    </div>
-  </p>
+        <td>
+          <a class="action-item crm-hover-button" href="#">{ts}Contacts{/ts}</a>
+          <a class="action-item crm-hover-button" href="#">{ts}Settings{/ts}</a>
+          <a class="action-item crm-hover-button" href="#">{ts}Disable{/ts}</a>
+        </td>
+      </tr>
+      {/foreach}
+    </table>
+  </div>
 </div>
 
-<pre>{$results}</pre>

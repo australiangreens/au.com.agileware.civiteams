@@ -8,23 +8,19 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Team_Form_Teams extends CRM_Core_Form {
+  protected $columns;
+  protected $select;
+
+  private $limit = 10;
+  private $offset = 0;
+
   public function buildQuickForm() {
     // Team Name Form Entry.
-    $this->add(
-      'text',
-      'team_name',
-      ts('Team Name')
-    );
+    $this->add('text', 'team_name', ts('Team Name'));
 
-    $this->add(
-      'text',
-      'sort_name',
-      ts('Member Name or Email')
-    );
+    $this->add('text', 'sort_name', ts('Member Name or Email'));
 
-    $this->addCheckBox(
-      'status',
-      ts('Status'),
+    $this->addCheckBox('status', ts('Status'),
       array(ts('Enabled') => 'enabled', ts('Disabled') => 'disabled'),
       NULL, NULL, NULL, NULL, "\n", FALSE
     );
@@ -37,35 +33,77 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
       ),
     ));
 
+    $this->add('select', 'limit', ts('Show entries'), array(10 => 10, 25 => 25, 50 => 50, 100 => 100));
+
+    $this->addOutputColumn('team_name', ts('Team Name'));
+    $this->addOutputColumn('members', ts('Members'));
+
     // export form elements
     $this->assign('searchElements', ['team_name','sort_name','status']);
 
-    $this->assign('teamList', $this->teamList());
+    $this->assign('colHeaders', array_values($this->columns));
+    $this->assign('colKeys', array_keys($this->columns));
+
+    CRM_Core_Session::setStatus(json_encode($this->controller->exportValues($this->_name)));
 
     parent::buildQuickForm();
   }
 
   public function postProcess() {
+    $input = $this->controller->exportValues($this->_name);
+
+    CRM_Core_Session::setStatus(kpr($input, TRUE));
+
+    if(!empty($input['team_name'])) {
+      $this->teamQuery()->where('t.team_name like @name', array('name' => "%{$input['team_name']}%"));
+    }
+
+    if(!empty($input['status'])) {
+      $status = array();
+      if(!empty($input['status']['enabled'])) {
+        $status[] = 1;
+      }
+      if(!empty($input['status']['disabled'])) {
+        $status[] = 0;
+      }
+      $this->teamQuery()->where('t.is_active IN (@status)', array('status' => $status));
+    }
+  }
+
+
+  public function addOutputColumn(string $name, string $label) {
+    $this->columns[$name] = $label;
+  }
+
+  public function teamQuery() {
+    return $this->select;
+  }
+
+  /* We build the basic query in the constructor so that preProcess hooks can alter it. */
+  public function __construct() {
+    parent::__construct();
+
+    $t = CRM_Team_BAO_Team::getTableName();
+    $tc = CRM_Team_BAO_TeamContact::getTableName();
+
+    $this->select = CRM_Utils_SQL_Select::from("$t t")
+      ->join('tc', "LEFT JOIN $tc tc on t.id = tc.team_id")
+      ->select(array('t.id', 't.team_name', 't.is_active', 'COUNT(tc.id) AS mcount'))
+      ->groupBy('t.id')
+      ->orderBy('t.id ASC')
+      ->limit($this->limit, $this->offset);
   }
 
   public function teamList() {
-    $input = $this->exportValues();
-
     $team_list = array();
 
+    $sql = $this->select->toSQL();
+
+    CRM_Core_Session::setStatus($sql, __FUNCTION__ . '「$sql」');
+
     $team = new CRM_Team_BAO_Team();
-    $contact = new CRM_Team_BAO_TeamContact();
 
-    $t = $team->tableName();
-    $tc = $contact->tableName();
-
-    $sql = "SELECT t.id, t.team_name, COUNT(tc.id) AS mcount FROM {$t} t LEFT JOIN {$tc} tc ON tc.team_id = t.id";
-
-    $sql .= ' GROUP BY t.id';
-
-    $team->query($sql);
-
-    $team->find();
+    $team->query($this->select->toSQL());
 
     while($team->fetch()) {
       $team_list[] = $this_team = array(
@@ -73,8 +111,6 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
         'team_name' => $team->team_name,
         'members' => $team->mcount,
       );
-
-      CRM_Core_Session::setstatus(json_encode($this_team, JSON_PRETTY_PRINT));
     }
 
     return $team_list;
