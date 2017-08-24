@@ -16,25 +16,3 @@
     </div>
   </div>
 </div>
-
-<div id="teamContact" class="crm-search-results">
-  <div class="crm-pager">{ts 1=$form.limit.html}Showing %1 entries{/ts}</div>
-  <div class="form-item">
-    <table>
-      <tr class="columnheader">{foreach from=$colHeaders item=colHeader}<th>{$colHeader}</th>{/foreach}<th>{* Operations *}</th></tr>
-      {foreach from=$teamList item=team}
-      <tr class="{cycle values="odd-row,even-row"}">
-        {foreach from=$colKeys item=ckey}
-        <td>{$team.$ckey}</td>
-        {/foreach}
-        <td>
-          <a class="action-item crm-hover-button" href="#">{ts}Contacts{/ts}</a>
-          <a class="action-item crm-hover-button" href="#">{ts}Settings{/ts}</a>
-          <a class="action-item crm-hover-button" href="#">{ts}Disable{/ts}</a>
-        </td>
-      </tr>
-      {/foreach}
-    </table>
-  </div>
-</div>
-

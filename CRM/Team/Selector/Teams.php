@@ -6,6 +6,7 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
   protected $_query;
 
   protected $_select;
+  protected $_groupBy;
 
   public function __construct() {
     self::_ensureColHeaders();
@@ -14,10 +15,10 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     $tc = CRM_Team_BAO_TeamContact::getTableName();
 
     $this->_query = CRM_Utils_SQL_Select::from("$t t")
-      ->join('tc', "LEFT JOIN $tc tc on t.id = tc.team_id")
-      ->groupBy('t.id');
+      ->join('tc', "LEFT JOIN $tc tc on t.id = tc.team_id");
 
     $this->_select = array('t.id', 't.team_name', 't.is_active', 'COUNT(tc.id) AS members');
+    $this->_groupBy = array('t.id');
   }
 
   private static function _ensureColHeaders () {
@@ -35,6 +36,18 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
         ),
       );
     }
+  }
+
+  public function where($exprs, $args = NULL) {
+    return $this->_query->where($exprs, $args);
+  }
+
+  public function join($name, $exprs, $args = NULL) {
+    return $this->_query->join($name, $exprs, $args);
+  }
+
+  public function having($exprs, $args = NULL) {
+    return $this->_query->having($name, $exprs, $args);
   }
 
   public function addColumn($sort, $name, $direction = CRM_Utils_Sort::DONTCARE) {
@@ -59,9 +72,6 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     $params['buttonBottom'] = 'PagerBottomButton';
   }
 
-  /*public function &getSortOrder($action) {
-    }*/
-
   public function &getColumnHeaders($action = NULL, $type = NULL) {
     self::_ensureColHeaders();
     return self::$_columnHeaders;
@@ -70,9 +80,11 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
   public function getTotalCount($action) {
     $query = $this->_query->copy();
 
-    $query->select('COUNT(DISTINCT t.id)');
+    $query->select('COUNT(DISTINCT t.`id`)');
 
-    return CRM_Core_DAO::singleValueQuery($query->toSQL());
+    $total = CRM_Core_DAO::singleValueQuery($query->toSQL());
+
+    return $total;
   }
 
   public function &getRows($action, $offset, $rowCount, $sort, $type = NULL){
@@ -81,8 +93,18 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     $result = new CRM_Team_BAO_Team();
 
     $query = $this->_query->copy();
-    $query -> limit($rowCount, $offset)
-           -> select($this->_select);
+    $query->limit($rowCount, $offset)
+          ->select($this->_select)
+          ->groupBy($this->_groupBy);
+
+    $order = $sort->orderBy();
+
+    if(!empty($order)) {
+      $query->orderBy($sort->orderBy());
+    }
+    else {
+      $query->orderBy('t.`created` ASC');
+    }
 
     $result->query($query->toSql());
 
