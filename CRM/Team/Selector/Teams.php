@@ -14,8 +14,8 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     $t = CRM_Team_BAO_Team::getTableName();
     $tc = CRM_Team_BAO_TeamContact::getTableName();
 
-    $this->_query = CRM_Utils_SQL_Select::from("$t t")
-      ->join('tc', "LEFT JOIN $tc tc on t.id = tc.team_id");
+    $this->_query = CRM_Utils_SQL_Select::from("`$t` t")
+      ->join('tc', "LEFT JOIN `$tc` tc on t.id = tc.team_id");
 
     $this->_select = array('t.id', 't.team_name', 't.is_active', 'COUNT(tc.id) AS members');
     $this->_groupBy = array('t.id');
@@ -67,7 +67,7 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
   public function getPagerParams($action, &$params) {
     $params['csvString'] = NULL;
     $params['rowCount'] = CRM_Utils_Pager::ROWCOUNT;
-    $params['status'] = ts('Teams %%StatusMessage%%');
+    $params['status'] = ts('Team %%StatusMessage%%');
     $params['buttonTop'] = 'PagerTopButton';
     $params['buttonBottom'] = 'PagerBottomButton';
   }

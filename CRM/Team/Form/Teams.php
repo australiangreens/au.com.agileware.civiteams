@@ -35,7 +35,7 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
     $this->add('select', 'limit', ts('Show entries'), array(10 => 10, 25 => 25, 50 => 50, 100 => 100));
 
     // export form elements
-    $this->assign('searchElements', ['team_name','sort_name','status']);
+    $this->assign('searchElements', ['team_name','member_name','status']);
 
     parent::buildQuickForm();
   }
@@ -49,6 +49,17 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
 
     if(!empty($params['team_name'])) {
       $selector->where('t.team_name like @name', array('name' => "%{$params['team_name']}%"));
+    }
+
+    if (!empty($params['member_name'])) {
+      $c = CRM_Contact_BAO_Contact::getTableName();
+      $e = CRM_Core_BAO_Email::getTableName();
+      $selector->join('c', "INNER JOIN `$c` c ON c.id = tc.contact_id"); // Pull in the Contact table
+      $selector->join('e', "INNER JOIN (SELECT contact_id, GROUP_CONCAT(DISTINCT email, ', ') emails FROM `$e` GROUP BY contact_id) e ON e.contact_id = c.id"); // Having pulled in the Contact table, we need emails too.
+      $selector->where(
+        '(c.sort_name LIKE @name OR c.display_name LIKE @name OR e.emails LIKE @name)',
+        array('name' => "%{$params['member_name']}%")
+      );
     }
 
     if(!empty($params['status'])) {
