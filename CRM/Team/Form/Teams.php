@@ -32,8 +32,6 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
       ),
     ));
 
-    $this->add('select', 'limit', ts('Show entries'), array(10 => 10, 25 => 25, 50 => 50, 100 => 100));
-
     // export form elements
     $this->assign('searchElements', ['team_name','member_name','status']);
 
@@ -60,6 +58,8 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
         '(c.sort_name LIKE @name OR c.display_name LIKE @name OR e.emails LIKE @name)',
         array('name' => "%{$params['member_name']}%")
       );
+
+      parent::postProcess();
     }
 
     if(!empty($params['status'])) {

@@ -24,6 +24,27 @@ class CRM_Team_Page_Teams extends CRM_Core_Page {
     $form->process();
     $form->run();
 
+    $urlString = 'civicrm/teams';
+    $urlParams = 'reset=1';
+
+    if ($team_name = CRM_Utils_Request::retrieve('team_name', 'String')) {
+      $urlParams .= '&team_name=' . $team_name;
+    }
+    if($member_name = CRM_Utils_Request::retrieve('member_name', 'String')) {
+      $urlParams .= '&team_name=' . $team_name;
+    }
+    if(is_array($status = CRM_Utils_Request::retrieve('status', 'String'))) {
+      foreach($status as $k => $v) {
+        $urlParams .= '&status[' . $k . ']=' . $v;
+      }
+    }
+
+    $session = CRM_Core_Session::singleton();
+
+    $url = CRM_Utils_System::url($urlString, $urlParams);
+
+    $session->replaceUserContext($url);
+
     $controller = new CRM_Core_Selector_Controller(
       $this->selector,
       $this->get(CRM_Utils_Pager::PAGE_ID),
