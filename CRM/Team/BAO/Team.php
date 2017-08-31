@@ -34,8 +34,6 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
       }
     }
 
-    CRM_Core_Error::debug_var("CRM_Team_BAO_Team::create「\$params」({$cid})", $params);
-
     $team = new CRM_Team_BAO_Team();
     $team->copyValues($params);
 
