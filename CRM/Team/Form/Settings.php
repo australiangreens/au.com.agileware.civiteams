@@ -8,17 +8,26 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Team_Form_Settings extends CRM_Core_Form {
+  private $groupNames;
+  private $elementNames;
+
   public function buildQuickForm() {
     $team_id = CRM_Utils_Request::retrieve('team_id', 'Integer');
 
     $team = civicrm_api3('Team', 'getsingle', array('id' => $team_id));
 
-    $this->assign('team_name', $team['team_name']);
+    CRM_Utils_System::setTitle(ts('Team Settings: %1', array(1 => $team['team_name'])));
+
+    $this->assign('team_name',    $team['team_name']);
     $this->assign('is_domain', !! $team['domain_id']);
+    $this->assign('groupNames',   $this->groupNames);
+    $this->assign('elementNames', $this->elementNames);
+    $this->assign('baseURL',      CRM_Core_Config::singleton()->userFrameworkBaseURL);
 
     $defaults = array (
       'team_name' => $team['team_name'],
-      'enabled' => $team['is_active'],
+      'enabled'   => $team['is_active'],
+      'team_id'   => $team_id,
     );
 
     // add form elements
@@ -43,13 +52,13 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
 
     $this->addButtons(array(
       array(
-        'type' => 'submit',
-        'name' => ts('Save'),
+        'type'      => 'submit',
+        'name'      => ts('Save'),
         'isDefault' => TRUE,
       ),
       array(
-        'type' => 'cancel',
-        'name' => ts('Cancel'),
+        'type'      => 'cancel',
+        'name'      => ts('Cancel'),
         'isDefault' => FALSE,
       ),
     ));
@@ -59,12 +68,29 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
+  public function add_elementGroup($key, $name) {
+    $this->groupNames[$key] = $name;
+  }
+
+  public function add_elementName($key, $group) {
+    $this->elementNames[$group][] = $key;
+  }
+
   public function postProcess() {
     $values = $this->exportValues();
 
-    CRM_Core_Session::setStatus(kpr($values, TRUE), __FUNCTION__ . '::「$values」');
+    $params = array (
+      'id'        => $values['team_id'],
+      'team_name' => $values['team_name'],
+      'is_active' => !! $values['enabled'],
+    );
 
     parent::postProcess();
+
+    CRM_Core_Session::setStatus(kpr($params, TRUE), __CLASS__ . '->' . __FUNCTION__ . '::「$params」');
+
+    $url = CRM_Utils_System::url('civicrm/teams/settings', 'reset=1&team_id=' . $values['team_id']);
+    CRM_Utils_System::redirect($url);
   }
 
   /**
