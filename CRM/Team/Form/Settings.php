@@ -10,6 +10,15 @@ require_once 'CRM/Core/Form.php';
 class CRM_Team_Form_Settings extends CRM_Core_Form {
   private $groupNames;
   private $elementNames;
+  private $descriptions;
+
+  public function __construct() {
+    $this->groupNames = array();
+    $this->elementNames = array();
+    $this->descriptions = array();
+
+    return parent::__construct();
+  }
 
   public function buildQuickForm() {
     $team_id = CRM_Utils_Request::retrieve('team_id', 'Integer');
@@ -22,6 +31,7 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $this->assign('is_domain', !! $team['domain_id']);
     $this->assign('groupNames',   $this->groupNames);
     $this->assign('elementNames', $this->elementNames);
+    $this->assign('descriptions', $this->descriptions);
     $this->assign('baseURL',      CRM_Core_Config::singleton()->userFrameworkBaseURL);
 
     $defaults = array (
@@ -72,8 +82,9 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $this->groupNames[$key] = $name;
   }
 
-  public function add_elementName($key, $group) {
+  public function add_elementName($key, $group, $description = NULL) {
     $this->elementNames[$group][] = $key;
+    $this->descriptions[$key] = $description;
   }
 
   public function postProcess() {
@@ -85,9 +96,9 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
       'is_active' => !! $values['enabled'],
     );
 
-    parent::postProcess();
+    civicrm_api3('Team', 'create', $params);
 
-    CRM_Core_Session::setStatus(kpr($params, TRUE), __CLASS__ . '->' . __FUNCTION__ . '::「$params」');
+    parent::postProcess();
 
     $url = CRM_Utils_System::url('civicrm/teams/settings', 'reset=1&team_id=' . $values['team_id']);
     CRM_Utils_System::redirect($url);
