@@ -17,13 +17,13 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $this->elementNames = array();
     $this->descriptions = array();
 
+    $this->team_id = CRM_Utils_Request::retrieve('team_id', 'Integer');
+
     return parent::__construct();
   }
 
   public function buildQuickForm() {
-    $team_id = CRM_Utils_Request::retrieve('team_id', 'Integer');
-
-    $team = civicrm_api3('Team', 'getsingle', array('id' => $team_id));
+    $team = civicrm_api3('Team', 'getsingle', array('id' => $this->team_id));
 
     CRM_Utils_System::setTitle(ts('Team Settings: %1', array(1 => $team['team_name'])));
 
@@ -37,7 +37,7 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $defaults = array (
       'team_name' => $team['team_name'],
       'enabled'   => $team['is_active'],
-      'team_id'   => $team_id,
+      'team_id'   => $this->team_id,
     );
 
     // add form elements
@@ -96,7 +96,9 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
       'is_active' => !! $values['enabled'],
     );
 
-    civicrm_api3('Team', 'create', $params);
+    $result = civicrm_api3('Team', 'create', $params);
+
+    $this->team_id = $result['id'];
 
     parent::postProcess();
 
