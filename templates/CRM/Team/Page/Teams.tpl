@@ -23,12 +23,10 @@
           </tr>
           {foreach from=$rows item=team}
             <tr class="{cycle values="odd-row,even-row"}">
-              {foreach from=$colHeaders key=ckey item=header}<td>{$team.$ckey}</td> {/foreach}
-              <td>
-                <a class="action-item crm-hover-button" href="#">{ts}Contacts{/ts}</a>
-                <a class="action-item crm-hover-button" href="#">{ts}Settings{/ts}</a>
-                <a class="action-item crm-hover-button" href="#">{ts}Disable{/ts}</a>
-              </td>
+              {foreach from=$colHeaders key=ckey item=header}
+              <td>{$team.$ckey}</td>
+              {/foreach}
+              <td>{$team.actions}</td>
             </tr>
           {/foreach}
       </table>
@@ -38,4 +36,3 @@
 {include file="CRM/common/pager.tpl" location="bottom"}
 
 {/if}
-

@@ -2,6 +2,7 @@
 
 class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core_Selector_API {
   static $_columnHeaders;
+  static $_links;
 
   protected $_query;
 
@@ -103,6 +104,8 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
 
     $order = $sort->orderBy();
 
+    $qfKey = $this->_key;
+
     if(!empty($order)) {
       $query->orderBy($sort->orderBy());
     }
@@ -112,6 +115,9 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
 
     $result->query($query->toSql());
 
+    $permissions = array();
+    $mask = CRM_Core_Action::mask($permissions);
+
     while($result->fetch()){
       $row['id']        = $result->id;
       $row['status']    = $result->is_active;
@@ -119,6 +125,17 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
       foreach(self::$_columnHeaders as $key => $col) {
         $row[$key] = htmlentities($result->{$key});
       }
+
+      $row['actions'] = CRM_Core_Action::formLink(
+        self::links($qfKey),
+        $mask,
+        array('team_id' => $result->id),
+        ts('more'),
+        FALSE,
+        'team.row',
+        'Team',
+        $result->id
+      );
 
       $rows[] = $row;
     }
@@ -131,5 +148,35 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
 
   public function getExportFileName($type = 'csv'){
     return ts('CiviTeams Teams');
+  }
+
+  public static function &links() {
+    if(!(self::$_links)) {
+      list($key) = func_get_args();
+      $extraParams = ($key) ? "&key={$key}" : NULL;
+
+      self::$_links = array(
+        CRM_Core_Action::VIEW => array(
+          'name' => ts('Contacts'),
+          'url' => 'civicrm/teams/contacts',
+          'qs' => "reset=1&team_id=%%team_id%%{$extraParams}",
+          'title' => ts('List Member Contacts'),
+          ),
+        CRM_Core_Action::UPDATE => array(
+          'name' => ts('Settings'),
+          'url' => 'civicrm/teams/settings',
+          'qs' => "reset=1&action=update&team_id=%%team_id%%{$extraParams}",
+          'title' => ts('Edit Team Settings'),
+        ),
+        CRM_Core_Action::DELETE => array(
+          'name' => ts('Disable'),
+          'url' => 'civicrm/teams/disable',
+          'qs' => "reset=1&team_id=%%team_id%%{$extraParams}",
+          'title' => ts('Disable Team'),
+        ),
+      );
+    }
+
+    return self::$_links;
   }
 }
