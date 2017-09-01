@@ -50,8 +50,12 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     return $this->_query->having($name, $exprs, $args);
   }
 
-  public function addColumn($sort, $name, $direction = CRM_Utils_Sort::DONTCARE) {
+  public function addColumn($sort, $name, $expr = NULL, $direction = CRM_Utils_Sort::DONTCARE) {
     self::_ensureColHeaders();
+
+    if(!$expr) {
+      $expr = $sort;
+    }
 
     if (empty(self::$_columnHeaders[$sort])){
       self::$_columnHeaders[$sort] = array(
@@ -61,7 +65,7 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
       );
     }
 
-    $this->_select[] = $sort;
+    $this->_select[] = $expr;
   }
 
   public function getPagerParams($action, &$params) {
@@ -110,9 +114,11 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
 
     while($result->fetch()){
       $row['id']        = $result->id;
-      $row['team_name'] = $result->team_name;
-      $row['members']   = $result->members;
       $row['status']    = $result->is_active;
+
+      foreach(self::$_columnHeaders as $key => $col) {
+        $row[$key] = htmlentities($result->{$key});
+      }
 
       $rows[] = $row;
     }

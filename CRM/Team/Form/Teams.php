@@ -73,4 +73,8 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
       $selector->where('t.is_active IN (@status)', array('status' => $status));
     }
   }
+
+  public function selector() {
+    return $this->controller->getParent()->selector();
+  }
 }
