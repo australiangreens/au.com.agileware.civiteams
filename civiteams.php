@@ -140,6 +140,22 @@ function civiteams_civicrm_entityTypes(&$entityTypes) {
 }
 
 /**
+ * Implements hook_civicrm_searchTasks().
+ */
+function civiteams_civicrm_searchTasks($objectType, &$tasks) {
+  if($objectType == 'contact') {
+    $tasks[] = array (
+      'title' => ts('Team - add contacts'),
+      'class' => 'CRM_Team_Form_AddContacts',
+    );
+    $tasks[] = array (
+      'title' => ts('Team - remove contacts'),
+      'class' => 'CRM_Team_Form_RemoveContacts',
+    );
+  }
+}
+
+/**
  * Functions below this ship commented out. Uncomment as required.
  *
 
