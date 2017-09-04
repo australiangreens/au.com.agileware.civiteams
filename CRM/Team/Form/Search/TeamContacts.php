@@ -37,6 +37,11 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
      * are part of the search criteria
      */
     $form->assign('elements', array('team_id'));
+
+    if ($team_id = CRM_Utils_Request::retrieve('team_id', 'Integer')){
+      $defaults = array('team_id' => $team_id);
+      $form->setDefaults($defaults);
+    }
   }
 
   /**
@@ -127,9 +132,7 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
 
     $count  = 1;
     $clause = array();
-    $team_id   = CRM_Utils_Array::value('team_id',
-      $this->_formValues
-    );
+    $team_id   = CRM_Utils_request::retrieve('team_id', 'Integer');
     if ($team_id != NULL) {
       $params[$count] = array($team_id, 'Integer');
       $clause[] = "team_contact.team_id = %{$count}";
@@ -138,6 +141,8 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
 
     if (!empty($clause)) {
       $where = implode(' AND ', $clause);
+    } else {
+      $where = '1';
     }
 
     return $this->whereClause($where, $params);
