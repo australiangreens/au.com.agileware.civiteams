@@ -23,12 +23,9 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
   }
 
   public function buildQuickForm() {
-    $team = civicrm_api3('Team', 'getsingle', array('id' => $this->team_id));
+    $team = !empty($this->team_id) ? civicrm_api3('Team', 'getsingle', array('id' => $this->team_id)) : array();
 
-    CRM_Utils_System::setTitle(ts('Team Settings: %1', array(1 => $team['team_name'])));
 
-    $this->assign('team_name',    $team['team_name']);
-    $this->assign('is_domain', !! $team['domain_id']);
     $this->assign('groupNames',   $this->groupNames);
     $this->assign('elementNames', $this->elementNames);
     $this->assign('descriptions', $this->descriptions);
@@ -36,9 +33,22 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
 
     $defaults = array (
       'team_name' => $team['team_name'],
-      'enabled'   => $team['is_active'],
+      'enabled'   => isset($team['is_active']) ? $team['is_active'] : 1,
       'team_id'   => $this->team_id,
     );
+
+    if ($this->team_id){
+      CRM_Utils_System::setTitle(ts('Team Settings: %1', array(1 => $team['team_name'])));
+
+      $this->assign('team_id',      $this->team_id);
+      $this->assign('team_name',    $team['team_name']);
+      $this->assign('is_domain', !! $team['domain_id']);
+    } else {
+      CRM_Utils_System::setTitle(ts('New Team'));
+
+      $this->add('checkbox', 'is_domain', ts('Use on any domain'));
+      $defaults['is_domain'] = 1;
+    }
 
     // add form elements
     $this->add(
@@ -62,8 +72,8 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
 
     $this->addButtons(array(
       array(
-        'type'      => 'submit',
-        'name'      => ts('Save'),
+        'type'      => 'done',
+        'name'      => ($this->team_id ? ts('Save') : ts('Continue')),
         'isDefault' => TRUE,
       ),
       array(
@@ -91,19 +101,19 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $values = $this->exportValues();
 
     $params = array (
-      'id'        => $values['team_id'],
       'team_name' => $values['team_name'],
       'is_active' => !! $values['enabled'],
     );
+
+    if($values['team_id']) {
+      $params['id'] = $values['team_id'];
+    }
 
     $result = civicrm_api3('Team', 'create', $params);
 
     $this->team_id = $result['id'];
 
     parent::postProcess();
-
-    $url = CRM_Utils_System::url('civicrm/teams/settings', 'reset=1&team_id=' . $values['team_id']);
-    CRM_Utils_System::redirect($url);
   }
 
   /**

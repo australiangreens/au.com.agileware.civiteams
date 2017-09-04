@@ -13,14 +13,23 @@
     <div class="content">{$form.enabled.html}&nbsp;{$form.enabled.label}</div>
   </div>
 
+  {if $team_id}
   <div class="crm-section form-item">
     <div class="label"></div>
     <div class="content">
-      {if $is_domain} {ts 1=$team_name}%1 is only available for <em class="placeholder">{$baseURL}</em>.{/ts}
+      {if $is_domain}{ts 1=$team_name 2=$baseURL}%1 is only available for <em class="placeholder">%2</em>.{/ts}
       {else}{ts 1=$team_name}%1 is available for all domains.{/ts}{/if}
     </div>
   </div>
-
+  {else}
+  <div class="crm-section form-item">
+    <div class="label"></div>
+    <div class="content">{$form.is_domain.html}&nbsp;{$form.is_domain.label}</div>
+    <div class="content description">
+      {ts 1=$baseURL}Allow this Team to be used on any CiviCRM site for your organisation. If this is not checked, your new Team will only be active on <em class="placeholder">%1</em>{/ts}
+    </div>
+  </div>
+  {/if}
   {foreach from=$groupNames item=groupName key=groupKey}
   <div class="crm-accordion-wrapper">
     <div class="crm-accordion-header">{$groupName}</div>
