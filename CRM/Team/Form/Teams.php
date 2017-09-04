@@ -14,6 +14,8 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
   private $limit = 10;
   private $offset = 0;
 
+  private $searchEls = array('team_name', 'member_name', 'status');
+
   public function buildQuickForm() {
     // Team Name Form Entry.
     $this->add('text', 'team_name', ts('Team Name'));
@@ -33,9 +35,16 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
     ));
 
     // export form elements
-    $this->assign('searchElements', ['team_name','member_name','status']);
+    $this->assign('searchElements', $this->searchEls);
 
     parent::buildQuickForm();
+  }
+
+  function addSearchElement($name) {
+    if (!in_array($name, $this->searchEls)) {
+      $this->searchEls[] = $name;
+      $this->assign('searchElements', $this->searchEls);
+    }
   }
 
   public function postProcess() {
