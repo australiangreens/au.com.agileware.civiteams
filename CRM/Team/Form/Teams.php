@@ -28,7 +28,7 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
 
     $this->addButtons(array(
       array(
-        'type' => 'submit',
+        'type' => 'refresh',
         'name' => ts('Search'),
         'isDefault' => TRUE,
       ),
@@ -67,8 +67,6 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
         '(c.sort_name LIKE @name OR c.display_name LIKE @name OR e.emails LIKE @name)',
         array('name' => "%{$params['member_name']}%")
       );
-
-      parent::postProcess();
     }
 
     if(!empty($params['status'])) {
@@ -85,5 +83,12 @@ class CRM_Team_Form_Teams extends CRM_Core_Form {
 
   public function selector() {
     return $this->controller->getParent()->selector();
+  }
+
+  public function mainProcess($allowAJAX = TRUE) {
+    parent::mainProcess($allowAJAX);
+
+    $selector = serialize($this->controller->getParent()->selector());
+    $this->controller->getParent()->set('selector', $selector);
   }
 }
