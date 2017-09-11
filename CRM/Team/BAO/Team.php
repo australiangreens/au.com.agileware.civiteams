@@ -21,7 +21,7 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
       'civicrm_team_permissions'
     );
 
-    return !(empty($permissions) || in_array(FALSE, $permissions));
+    return !in_array(FALSE, $permissions);
   }
 
   public static function create(&$params) {
@@ -44,5 +44,13 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
     }
 
     return $team;
+  }
+
+  public function addSelectWhereClause() {
+    $clauses = parent::addSelectWhereClause();
+    $contact_id = CRM_Core_Session::getLoggedInContactID();
+    $clauses['id'][] = 'IN (SELECT team_id FROM civicrm_team_contact WHERE contact_id = ' . $contact_id . ')';
+
+    return $clauses;
   }
 }
