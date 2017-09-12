@@ -48,8 +48,11 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
 
   public function addSelectWhereClause() {
     $clauses = parent::addSelectWhereClause();
-    $contact_id = CRM_Core_Session::getLoggedInContactID();
-    $clauses['id'][] = 'IN (SELECT team_id FROM civicrm_team_contact WHERE contact_id = ' . $contact_id . ')';
+
+    if (!CRM_Core_Permission::check('administer teams')) {
+      $contact_id = CRM_Core_Session::getLoggedInContactID();
+      $clauses['id'][] = 'IN (SELECT team_id FROM civicrm_team_contact WHERE contact_id = ' . $contact_id . ')';
+    };
 
     return $clauses;
   }
