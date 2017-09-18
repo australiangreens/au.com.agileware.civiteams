@@ -9,19 +9,37 @@ class CRM_Team_Page_TeamContacts extends CRM_Core_Page {
   private $selector;
 
   public function run() {
-    if (!$team_id = CRM_Utils_Request::retrieve('team_id', 'Integer')) {
-      CRM_Core_Error::fatal(ts('Required team_id parameter invalid or not provided.'));
+    $team_id = CRM_Utils_Request::retrieve('team_id', 'Integer');
+
+    if (!$team_id && !($team_id = $this->get('team_id'))) {
+      CRM_Core_Error::fatal(ts('Required team_id parameter invalid or not provided.') . '<pre>' . print_r($this->selector, TRUE) . '</pre>');
     }
 
     $team = civicrm_api3('Team', 'getsingle', array('id' => $team_id));
 
     CRM_Utils_System::setTitle(ts('Contacts in Team: %1', array(1 => $team['team_name'])));
 
+    $form = new CRM_Core_Controller_Simple(
+      'CRM_Team_Form_TeamContacts',
+      ts('Find Contacts within this team'),
+      CRM_Core_Action::ADD
+    );
+    list(, $action) = $form->getActionName();
+
+    if($action != 'refresh') {
+      $s_selector = $this->get('selector');
+    }
+
     if(!($s_selector && ($this->selector = unserialize($s_selector)) instanceof CRM_Team_Selector_Teams)){
       $this->selector = new CRM_Team_Selector_TeamContacts();
      }
 
     $this->selector->where('team_id = @team_id', array('team_id' => $team_id));
+
+    $form->setEmbedded(TRUE);
+    $form->setParent($this);
+    $form->process();
+    $form->run();
 
     $session = CRM_Core_Session::singleton();
 

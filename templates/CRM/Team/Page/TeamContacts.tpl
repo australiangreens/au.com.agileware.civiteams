@@ -1,3 +1,5 @@
+{include file="CRM/Team/Form/TeamContacts.tpl"}
+
 {if $rows}
 {include file="CRM/common/pager.tpl" location="top"}
 

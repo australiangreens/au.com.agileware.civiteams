@@ -154,7 +154,6 @@ class CRM_Team_Selector_TeamContacts extends CRM_Core_Selector_Base implements C
       $query->orderBy('c.`sort_name` ASC');
     }
 
-    CRM_Core_Error::debug_var('query', $query);
     CRM_Core_Error::debug_var('query->toSql()', $query->toSql());
 
     $result->query($query->toSql());
@@ -164,6 +163,8 @@ class CRM_Team_Selector_TeamContacts extends CRM_Core_Selector_Base implements C
 
     while($result->fetch()){
       $row = array('id' => $result->id);
+
+      $row['checkbox'] = CRM_Core_Form::CB_PREFIX . $result->id;
 
       foreach(self::$_columnHeaders as $key => $col) {
         switch($key) {
