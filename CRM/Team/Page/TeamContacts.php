@@ -36,6 +36,13 @@ class CRM_Team_Page_TeamContacts extends CRM_Core_Page {
 
     $this->selector->where('team_id = @team_id', array('team_id' => $team_id));
 
+    if($member_name = $this->get('member_name')) {
+      $this->selector->where(
+        '(c.sort_name LIKE @name OR c.display_name LIKE @name OR e.email LIKE @name)',
+        array('name' => "%{$member_name}%")
+      );
+    }
+
     $form->setEmbedded(TRUE);
     $form->setParent($this);
     $form->process();

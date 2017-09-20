@@ -35,8 +35,12 @@ class CRM_Team_Form_TeamContacts extends CRM_Core_Form {
 
     $defaults = array();
 
-    if($team_id = CRM_Utils_Request::retrieve('team_id' , 'Integer')) {
+    if(($team_id = CRM_Utils_Request::retrieve('team_id' , 'Integer')) || ($team_id = $this->controller->getParent()->get('team_id'))) {
       $defaults['team_id'] = $team_id;
+    }
+
+    if($member_name = $this->controller->getParent()->get('member_name')) {
+      $defaults['member_name'] = $member_name;
     }
 
     $this->setDefaults($defaults);
@@ -56,33 +60,14 @@ class CRM_Team_Form_TeamContacts extends CRM_Core_Form {
 
     $parent = $this->controller->getParent();
 
-    $selector = $parent->selector();
-
-    dpm($params);
-
     if(!empty($params['team_id'])) {
       $parent->set('team_id', $params['team_id']);
     }
 
     if (!empty($params['member_name'])) {
-      $c = CRM_Contact_BAO_Contact::getTableName();
-      $e = CRM_Core_BAO_Email::getTableName();
-      $selector->join('e', "INNER JOIN (SELECT contact_id, GROUP_CONCAT(DISTINCT email, ', ') emails FROM `$e` GROUP BY contact_id) e ON e.contact_id = c.id"); // Having pulled in the Contact table, we need emails too.
-      $selector->where(
-        '(c.sort_name LIKE @name OR c.display_name LIKE @name OR e.emails LIKE @name)',
-        array('name' => "%{$params['member_name']}%")
-      );
-    }
-
-    if(!empty($params['status'])) {
-      $status = array();
-      if(!empty($params['status']['enabled'])) {
-        $status[] = 1;
-      }
-      if(!empty($params['status']['disabled'])) {
-        $status[] = 0;
-      }
-      $selector->where('t.is_active IN (@status)', array('status' => $status));
+      $parent->set('member_name', $params['member_name']);
+    } else {
+      $parent->set('member_name', '');
     }
   }
 
@@ -94,7 +79,7 @@ class CRM_Team_Form_TeamContacts extends CRM_Core_Form {
     parent::mainProcess($allowAJAX);
 
     $selector = serialize($this->controller->getParent()->selector());
-    CRM_Core_Error::debug_var('selector', $selector);
+
     $this->controller->getParent()->set('selector', $selector);
   }
 }

@@ -154,8 +154,6 @@ class CRM_Team_Selector_TeamContacts extends CRM_Core_Selector_Base implements C
       $query->orderBy('c.`sort_name` ASC');
     }
 
-    CRM_Core_Error::debug_var('query->toSql()', $query->toSql());
-
     $result->query($query->toSql());
 
     $permissions = array();
