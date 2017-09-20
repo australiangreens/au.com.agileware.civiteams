@@ -37,3 +37,5 @@
 
 {include file="CRM/common/pager.tpl" location="bottom"}
 {/if}
+
+<a href="{crmURL p="civicrm/teams/settings" q="reset=1&team_id=$team_id"}">{ts}» Team Settings{/ts}</a>

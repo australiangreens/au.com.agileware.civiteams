@@ -57,3 +57,5 @@
     {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
 </div>
+
+<a href="{crmURL p="civicrm/teams/contacts" q="reset=1&team_id=$team_id"}">{ts}» Contacts in this Team{/ts}</a>

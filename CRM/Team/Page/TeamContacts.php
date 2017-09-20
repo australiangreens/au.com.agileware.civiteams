@@ -15,6 +15,8 @@ class CRM_Team_Page_TeamContacts extends CRM_Core_Page {
       CRM_Core_Error::fatal(ts('Required team_id parameter invalid or not provided.') . '<pre>' . print_r($this->selector, TRUE) . '</pre>');
     }
 
+    $this->assign('team_id', $team_id);
+
     $team = civicrm_api3('Team', 'getsingle', array('id' => $team_id));
 
     CRM_Utils_System::setTitle(ts('Contacts in Team: %1', array(1 => $team['team_name'])));
