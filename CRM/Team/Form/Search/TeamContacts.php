@@ -27,6 +27,8 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
       )
     );
 
+    $form->add('text', 'name', ts('Name or Email'));
+
     // Optionally define default search values
     $form->setDefaults(array(
       'team_id' => NULL,
@@ -36,7 +38,7 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
      * if you are using the standard template, this array tells the template what elements
      * are part of the search criteria
      */
-    $form->assign('elements', array('team_id'));
+    $form->assign('elements', array('team_id', 'name'));
 
     if ($team_id = CRM_Utils_Request::retrieve('team_id', 'Integer')){
       $defaults = array('team_id' => $team_id);
@@ -67,10 +69,14 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
   function &columns() {
     // return by reference
     $columns = array(
-      ts('Contact Id') => 'contact_id',
-      ts('Contact Type') => 'contact_type',
       ts('Name') => 'sort_name',
+      ts('Address') => 'street_address',
+      ts('City') => 'city',
       ts('State') => 'state_province',
+      ts('Postal') => 'postal_code',
+      ts('Country') => 'country',
+      ts('Email') => 'email',
+      ts('Phone') => 'phone',
     );
     return $columns;
   }
@@ -97,10 +103,17 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
    */
   function select() {
     return "
-      contact_a.id           as contact_id,
-      contact_a.contact_type as contact_type,
-      contact_a.sort_name    as sort_name,
-      state_province.name    as state_province
+      DISTINCT
+      contact_a.id           AS contact_id,
+      contact_a.contact_type AS contact_type,
+      contact_a.sort_name    AS sort_name,
+      address.street_address,
+      address.city,
+      address.postal_code,
+      state_province.name    AS state_province,
+      country.name           AS country,
+      email.email,
+      phone.phone
     ";
   }
 
@@ -115,9 +128,12 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
       INNER JOIN civicrm_team_contact team_contact     ON ( team_contact.contact_id  = contact_a.id )
       LEFT JOIN  civicrm_address address               ON ( address.contact_id       = contact_a.id AND
                                                             address.is_primary       = 1 )
-      LEFT JOIN  civicrm_email                         ON ( civicrm_email.contact_id = contact_a.id AND
-                                                            civicrm_email.is_primary = 1 )
+      LEFT JOIN  civicrm_email `email`                 ON ( `email`.contact_id       = contact_a.id AND
+                                                            `email`.is_primary       = 1 )
+      LEFT JOIN  civicrm_phone phone                   ON ( phone.contact_id         = contact_a.id AND
+                                                            phone.is_primary         = 1 )
       LEFT JOIN  civicrm_state_province state_province ON ( state_province.id        = address.state_province_id )
+      LEFT JOIN  civicrm_country country               ON ( country.id               = address.country_id )
     ";
   }
 
@@ -132,10 +148,18 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
 
     $count  = 1;
     $clause = array();
-    $team_id   = CRM_Utils_request::retrieve('team_id', 'Integer');
+    $team_id = CRM_Utils_request::retrieve('team_id', 'Integer');
+
     if ($team_id != NULL) {
       $params[$count] = array($team_id, 'Integer');
       $clause[] = "team_contact.team_id = %{$count}";
+      $count++;
+    }
+
+    $name = CRM_Utils_request::retrieve('name', 'String');
+    if ($name != NULL) {
+      $params[$count] = array('%' . $name . '%', 'String');
+      $clause[] = "contact_a.sort_name LIKE %{$count} OR contact_a.display_name LIKE %{$count} OR email.email LIKE %{$count}";
       $count++;
     }
 
@@ -164,6 +188,5 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
    * @return void
    */
   function alterRow(&$row) {
-    $row['sort_name'] .= ' ( altered )';
   }
 }
