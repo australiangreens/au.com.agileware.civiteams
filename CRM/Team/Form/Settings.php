@@ -31,6 +31,9 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $this->assign('descriptions', $this->descriptions);
     $this->assign('baseURL',      CRM_Core_Config::singleton()->userFrameworkBaseURL);
 
+    $cs = CRM_Core_ManagedEntities::get('au.com.agileware.civiteams', 'CRM_Team_Form_Search_TeamContacts');
+    $this->assign('csid', $cs['value']);
+
     $defaults = array (
       'team_name' => $team['team_name'],
       'enabled'   => isset($team['is_active']) ? $team['is_active'] : 1,

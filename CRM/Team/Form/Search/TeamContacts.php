@@ -20,6 +20,7 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
     $form->addEntityRef('team_id', ts('Team'), array (
         'entity' => 'team',
         'placeholder' => ts('- Select Team -'),
+        'select' => array('minimumInputLength' => 0),
         'api' => array (
           'search_field' => 'team_name',
           'label_field' => 'team_name'
@@ -40,9 +41,19 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
      */
     $form->assign('elements', array('team_id', 'name'));
 
-    if ($team_id = CRM_Utils_Request::retrieve('team_id', 'Integer')){
+    $params = $form->controller->exportValues($this->_name);
+
+    $team_id = $params['team_id'];
+
+    if (!empty($team_id) || $team_id = CRM_Utils_Request::retrieve('team_id', 'Integer')) {
       $defaults = array('team_id' => $team_id);
       $form->setDefaults($defaults);
+
+      $team_name = civicrm_api3('Team', 'getvalue', array('id' => $team_id, 'return' => 'team_name'));
+
+      CRM_Utils_System::setTitle(ts('Contacts in Team: %1', array(1 => $team_name)));
+
+      $form->assign('team_id', $team_id);
     }
   }
 
@@ -178,7 +189,7 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
    * @return string, template path (findable through Smarty template path)
    */
   function templateFile() {
-    return 'CRM/Contact/Form/Search/Custom.tpl';
+    return 'CRM/Team/Form/Search/TeamContacts.tpl';
   }
 
   /**

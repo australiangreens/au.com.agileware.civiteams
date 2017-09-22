@@ -58,4 +58,4 @@
   </div>
 </div>
 
-<a href="{crmURL p="civicrm/teams/contacts" q="reset=1&team_id=$team_id"}">{ts}» Contacts in this Team{/ts}</a>
+{if $team_id}<a href="{crmURL p="civicrm/contact/search/custom" q="force=1&reset=1&team_id=$team_id&csid=$csid"}">{ts}» Contacts in this Team{/ts}</a>{/if}

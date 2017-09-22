@@ -12,10 +12,4 @@
     <title>Settings</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
-  <item>
-    <path>civicrm/teams/contacts</path>
-    <page_callback>CRM_Team_Page_TeamContacts</page_callback>
-    <title>Team Contacts</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
 </menu>

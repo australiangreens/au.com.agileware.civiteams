@@ -160,8 +160,8 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
       self::$_links = array(
         CRM_Core_Action::VIEW => array(
           'name' => ts('Contacts'),
-          'url' => 'civicrm/teams/contacts',
-          'qs' => "reset=1&force=1&team_id=%%team_id%%{$extraParams}",
+          'url' => 'civicrm/contact/search/custom',
+          'qs' => "reset=1&force=1&team_id=%%team_id%%&csid={$cs['value']}{$extraParams}",
           'title' => ts('List Member Contacts'),
           ),
         CRM_Core_Action::UPDATE => array(
