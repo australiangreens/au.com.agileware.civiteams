@@ -23,6 +23,13 @@ class CRM_Team_Form_RemoveContacts extends CRM_Contact_Form_Task {
       TRUE
     );
 
+    $params = $this->controller->exportValues();
+
+    if(!empty($params['team_id'])) {
+      $defaults = array ('team_id' => $params['team_id']);
+      $this->setDefaults($defaults);
+    }
+
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
     parent::buildQuickForm();
