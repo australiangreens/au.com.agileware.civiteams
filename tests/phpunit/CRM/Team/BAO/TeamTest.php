@@ -6,24 +6,13 @@ use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
 
 /**
- * FIXME - Add test description.
- *
- * Tips:
- *  - With HookInterface, you may implement CiviCRM hooks directly in the test class.
- *    Simply create corresponding functions (e.g. "hook_civicrm_post(...)" or similar).
- *  - With TransactionalInterface, any data changes made by setUp() or test****() functions will
- *    rollback automatically -- as long as you don't manipulate schema or truncate tables.
- *    If this test needs to manipulate schema or truncate tables, then either:
- *       a. Do all that using setupHeadless() and Civi\Test.
- *       b. Disable TransactionalInterface, and handle all setup/teardown yourself.
- *
+ * Test class for Team BAO and it's methods.
  * @group headless
  */
 class CRM_Team_BAO_TeamTest extends CiviUnitTestCase implements HeadlessInterface {
 
   public function setUpHeadless() {
-    // Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
-    // See: https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
+    // Comment following block out to setup headdless database.
     /*return \Civi\Test::headless()
       ->installMe(__DIR__)
       ->apply();*/
@@ -57,18 +46,6 @@ class CRM_Team_BAO_TeamTest extends CiviUnitTestCase implements HeadlessInterfac
     $team = CRM_Team_BAO_Team::create($params);
     $this->assertInstanceOf('CRM_Team_BAO_Team', $team, 'Check for created object');
     $this->assertEquals($teamName, $team->team_name, 'Check for team name.');
-
-    $team_id = $team->id;
-
-    $teamNameNew = "Agileware Team New";
-    $params = array(
-      "team_name" => $teamNameNew,
-      "id"        => $team_id,
-    );
-
-    $team = CRM_Team_BAO_Team::create($params);
-    $this->assertInstanceOf('CRM_Team_BAO_Team', $team, 'Check for updated object');
-    $this->assertEquals($teamNameNew, $team->team_name, 'Check for team name updation.');
   }
 
   /**
@@ -91,4 +68,86 @@ class CRM_Team_BAO_TeamTest extends CiviUnitTestCase implements HeadlessInterfac
     $this->assertEquals($domainId, $team->domain_id, 'Check for domain id.');
     $this->assertEquals($contactId, $team->created_id, 'Check for contact id.');
   }
+
+   /**
+    * Test team setting update
+    */
+   public function testUpdateSettings() {
+     $teamName = "Agileware Team";
+     $params = array(
+       "team_name" => $teamName,
+       "is_active"  => 0,
+     );
+     $team = CRM_Team_BAO_Team::create($params);
+     $this->assertInstanceOf('CRM_Team_BAO_Team', $team, 'Check for created object');
+     $this->assertEquals($teamName, $team->team_name, 'Check for team name.');
+     $this->assertEquals(0, $team->is_active, 'Check is_active status.');
+
+     $team_id = $team->id;
+
+     $teamNameNew = "Agileware Team New";
+     $params = array(
+       "team_name" => $teamNameNew,
+       "id"        => $team_id,
+       "is_active"  => 1,
+     );
+
+     $team = CRM_Team_BAO_Team::create($params);
+     $this->assertInstanceOf('CRM_Team_BAO_Team', $team, 'Check for updated object');
+     $this->assertEquals($teamNameNew, $team->team_name, 'Check for team name updation.');
+     $this->assertEquals(1, $team->is_active, 'Check is_active status.');
+   }
+
+   /**
+    * Test team retrieve by name
+    */
+   public function testFetchByName() {
+     $teamName = "Agileware Team";
+     $params = array(
+       "team_name" => $teamName,
+     );
+     $team = CRM_Team_BAO_Team::create($params);
+
+     $params = array(
+       "team_name" => $teamName,
+     );
+     $team = new CRM_Team_DAO_Team();
+     $team->copyValues($params);
+     $this->assertEquals(TRUE, $team->find(TRUE), 'Check if team found.');
+   }
+
+   /**
+    * Test team retrieve by contact
+    */
+   public function testFetchByContact() {
+     $contactId = $this->individualCreate();
+     $teamName = "Agileware Team";
+     $params = array(
+       "team_name"  => $teamName,
+       "created_id" => $contactId,
+     );
+     $team = CRM_Team_BAO_Team::create($params);
+     $params = array(
+       "created_id" => $contactId,
+     );
+     $team = new CRM_Team_DAO_Team();
+     $team->copyValues($params);
+     $this->assertEquals(TRUE, $team->find(), 'Check if team found.');
+   }
+
+   /**
+    * Test deleting a team
+    */
+   public function testDelete() {
+     $teamName = "Agileware Team";
+     $params = array(
+       "team_name"  => $teamName,
+     );
+     $team = CRM_Team_BAO_Team::create($params);
+     $teamid = $team->id;
+
+     $team = new CRM_Team_DAO_Team();
+     $team->id = $teamid;
+     $this->assertEquals(TRUE, $team->delete(), 'Check if team is deleted.');
+   }
 }
