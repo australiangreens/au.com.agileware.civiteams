@@ -27,7 +27,7 @@ class CRM_Team_BAO_TeamTest extends CiviUnitTestCase implements HeadlessInterfac
   }
 
   /**
-   * Test that a team is not created with empty array.
+   * Test that a team is not created with empty params.
    */
   public function testCreateWithEmptyParams() {
     $params = array();
