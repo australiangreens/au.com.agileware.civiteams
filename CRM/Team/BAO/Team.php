@@ -25,6 +25,10 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
   }
 
   public static function create(&$params) {
+    if(empty($params)){
+      return null;
+    }
+    
     if (empty($params['id'])){
       $session = CRM_Core_Session::singleton();
       $cid = $session->get('userID');

@@ -9,7 +9,7 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_team_create_spec(&$spec) {
-  // $spec['some_parameter']['api.required'] = 1;
+   $spec['team_name']['api.required'] = 1;
 }
 
 /**
@@ -20,7 +20,7 @@ function _civicrm_api3_team_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_team_create($params) {
-  if(is_array($params['data']) || is_object($params['data'])) {
+  if(isset($params['data']) && (is_array($params['data']) || is_object($params['data']))) {
     $params['data'] = json_encode($params['data']);
   }
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
