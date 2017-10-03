@@ -6,10 +6,12 @@ use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
 
 /**
- * Test class for TeamContact BAO and it's methods.
+ * Test class for TeamContact API and it's methods.
+ * @package CiviCRM_APIv3
+ * @subpackage API_Activity
  * @group headless
  */
-class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessInterface {
+class api_v3_TeamContactTest extends CiviUnitTestCase implements HeadlessInterface {
 
   public function setUpHeadless() {
     // Comment following block out to setup headdless database.
@@ -30,9 +32,7 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
    * Test that a team contact is not created with empty parameters.
    */
   public function testCreateWithEmptyParams() {
-    $params = array();
-    $teamContact = CRM_Team_BAO_Team::create($params);
-    $this->assertNull($teamContact);
+    $this->callAPIFailure('TeamContact', 'create', array());
   }
 
   /**
@@ -43,8 +43,7 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
     $params = array(
       "team_id" => $team->id
     );
-    $teamContact = CRM_Team_BAO_TeamContact::create($params);
-    $this->assertNull($teamContact);
+    $this->callAPIFailure('TeamContact', 'create', $params);
   }
 
   /**
@@ -55,8 +54,7 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
     $params = array(
       "contact_id" => $contactId
     );
-    $teamContact = CRM_Team_BAO_TeamContact::create($params);
-    $this->assertNull($teamContact);
+    $this->callAPIFailure('TeamContact', 'create', $params);
   }
 
   /**
@@ -70,10 +68,9 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
       "team_id"    => $team->id,
       "status"     => 1
     );
-    $teamContact = CRM_Team_BAO_TeamContact::create($params);
-    $this->assertInstanceOf('CRM_Team_BAO_TeamContact', $teamContact, 'Check for created object');
-    $this->assertEquals($team->id, $teamContact->team_id, 'Check for team id.');
-    $this->assertEquals($contactId, $teamContact->contact_id, 'Check for contact id.');
+    $result = $this->callAPISuccess('TeamContact', 'create', $params);
+    $this->assertEquals($team->id, $result["values"][$result["id"]]["team_id"], 'Check for team id.');
+    $this->assertEquals($contactId, $result["values"][$result["id"]]["contact_id"], 'Check for contact id.');
   }
 
   /**
@@ -84,9 +81,8 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
     $searchParams = array(
       "team_id"  =>  $team->id,
     );
-    $teamContact = new CRM_Team_BAO_TeamContact();
-    $teamContact->copyValues($searchParams);
-    $this->assertEquals(2, $teamContact->find(), 'Check for the count of team contacts.');
+    $result = $this->callAPISuccess('TeamContact', 'get', $searchParams);
+    $this->assertEquals(2, $result["count"], 'Check for the count of team contacts.');
   }
 
   /**
@@ -97,9 +93,8 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
     $searchParams = array(
       "team_id"  =>  $team->id,
     );
-    $teamContact = new CRM_Team_BAO_TeamContact();
-    $teamContact->copyValues($searchParams);
-    $this->assertEquals(TRUE, $teamContact->delete(), 'Check if team contacts deleted.');
+    $result = $this->callAPISuccess('TeamContact', 'get', $searchParams);
+    $this->assertEquals(2, $result["count"], 'Check if team contacts deleted.');
   }
 
   /*
@@ -120,6 +115,7 @@ class CRM_Team_BAO_TeamContactTest extends CiviUnitTestCase implements HeadlessI
       "team_id"    => $team->id,
       "status"     => 1
     );
+
     $teamContact = CRM_Team_BAO_TeamContact::create($params);
     $teamContact2 = CRM_Team_BAO_TeamContact::create($params2);
 
