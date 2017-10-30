@@ -25,6 +25,9 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
   public function buildQuickForm() {
     $team = !empty($this->team_id) ? civicrm_api3('Team', 'getsingle', array('id' => $this->team_id)) : array();
 
+    if(!CRM_Team_BAO_Team::hasTeamAccess($team)) {
+      throw new \Civi\API\Exception\UnauthorizedException('Permission denied to modify settings of this team.');
+    }
 
     $this->assign('groupNames',   $this->groupNames);
     $this->assign('elementNames', $this->elementNames);
@@ -110,6 +113,10 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
 
     if($values['team_id']) {
       $params['id'] = $values['team_id'];
+    }
+
+    if (isset($values["is_domain"])) {
+      $params['domain_id'] = CRM_Core_Config::domainID();
     }
 
     $result = civicrm_api3('Team', 'create', $params);

@@ -24,11 +24,23 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
     return !in_array(FALSE, $permissions);
   }
 
+  /**
+   * Check if we have access to do operations on a team.
+   * @param $team
+   * @return TRUE|FALSE
+   */
+  public static function hasTeamAccess($team) {
+    if($team["domain_id"] == NULL || $team["domain_id"] == CRM_Core_Config::domainID()) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
   public static function create(&$params) {
     if(empty($params)){
       return null;
     }
-    
+
     if (empty($params['id'])){
       $session = CRM_Core_Session::singleton();
       $cid = $session->get('userID');

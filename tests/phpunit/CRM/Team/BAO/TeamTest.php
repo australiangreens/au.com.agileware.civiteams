@@ -69,6 +69,51 @@ class CRM_Team_BAO_TeamTest extends CiviUnitTestCase implements HeadlessInterfac
     $this->assertEquals($contactId, $team->created_id, 'Check for contact id.');
   }
 
+  /**
+   * Test domain access of teams.
+   */
+  public function testDomainAccessOfTeams() {
+    $contactId = $this->individualCreate();
+    $teamName = "Agileware Team";
+    $domainId = CRM_Core_Config::domainID();
+    $params = array(
+      "team_name"  => $teamName,
+      "domain_id"  => $domainId,
+      "is_active"  => 0,
+      "created_id" => $contactId,
+    );
+
+    $team = CRM_Team_BAO_Team::create($params);
+    $domainId = $this->createDomain();
+    $params["domain_id"] = $domainId;
+    $team2 = CRM_Team_BAO_Team::create($params);
+
+    unset($params["domain_id"]);
+    $team3 = CRM_Team_BAO_Team::create($params);
+
+    $teams = $this->callAPISuccess("Team","get",array());
+    $this->assertEquals(2, $teams["count"], "Should have access to only 2 teams.");
+  }
+
+  /**
+   * Test team access restriction.
+   */
+  public function testTeamRestriction() {
+    $contactId = $this->individualCreate();
+    $teamName = "Agileware Team";
+    $domainId = $this->createDomain();
+    $params = array(
+      "team_name"  => $teamName,
+      "domain_id"  => $domainId,
+      "is_active"  => 0,
+      "created_id" => $contactId,
+    );
+    $team = CRM_Team_BAO_Team::create($params);
+    $this->callAPIFailure("Team","getsingle",array(
+      "team_id" => $team->id
+    ));
+  }
+
    /**
     * Test team setting update
     */
@@ -149,5 +194,16 @@ class CRM_Team_BAO_TeamTest extends CiviUnitTestCase implements HeadlessInterfac
      $team = new CRM_Team_DAO_Team();
      $team->id = $teamid;
      $this->assertEquals(TRUE, $team->delete(), 'Check if team is deleted.');
+   }
+
+   /**
+    * Create domain to test team access.
+    */
+   private function createDomain() {
+     $result = $this->callAPISuccess('Domain', 'create', array(
+       "name"           => "New domain name",
+       "domain_version" => "1"
+     ));
+     return $result["id"];
    }
 }
