@@ -20,6 +20,11 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
 
     $this->_select = array('t.id', 't.team_name', 't.is_active', 'COUNT(tc.id) AS members');
     $this->_groupBy = array('t.id');
+    $this->where(array(
+      "t.domain_id = #id OR t.domain_id IS NULL"
+    ), array(
+      "id" => CRM_Core_Config::domainID()
+    ));
   }
 
   private static function _ensureColHeaders () {

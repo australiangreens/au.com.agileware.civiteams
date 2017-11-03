@@ -45,14 +45,29 @@ function civicrm_api3_team_delete($params) {
  * @throws API_Exception
  */
 function civicrm_api3_team_get($params) {
+  if(isset($params["return"])) {
+    if(is_array($params["return"])) {
+      $params["return"][] = "domain_id";
+    } else {
+      $currentParam = $params["return"];
+      $params["return"] = array($currentParam, "domain_id");
+    }
+  }
+  $domainID = CRM_Core_Config::domainID();
   $teams = _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  $returnTeams = $teams;
+  $returnTeams["values"] = array();
   if(is_array($teams['values'])) {
-    foreach($teams['values'] as $id => &$team) {
+    foreach($teams['values'] as $id => $team) {
       if(!empty($team['data'])) {
         $team['data'] = json_decode($team['data'], TRUE);
       }
+
+      if(!isset($team["domain_id"]) || $team["domain_id"] == $domainID) {
+        $returnTeams["values"][] = $team;
+      }
     }
   }
-
-  return $teams;
+  $returnTeams["count"] = count($returnTeams["values"]);
+  return $returnTeams;
 }

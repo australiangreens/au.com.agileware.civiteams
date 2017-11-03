@@ -30,6 +30,7 @@ class CRM_Team_Form_AddContacts extends CRM_Contact_Form_Task {
 
   public function postProcess() {
     $params = $this->controller->exportValues();
+    $params["team_id"] = CRM_Utils_Request::retrieve('team_id', 'Integer');
 
     $added = 0;
     $existing = 0;

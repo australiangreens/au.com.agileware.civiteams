@@ -49,9 +49,12 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
       $defaults = array('team_id' => $team_id);
       $form->setDefaults($defaults);
 
-      $team_name = civicrm_api3('Team', 'getvalue', array('id' => $team_id, 'return' => 'team_name'));
+      $team = civicrm_api3('Team', 'getsingle', array('id' => $team_id));
+      if(!CRM_Team_BAO_Team::hasTeamAccess($team)) {
+        throw new \Civi\API\Exception\UnauthorizedException('Permission denied to access contacts of this team.');
+      }
 
-      CRM_Utils_System::setTitle(ts('Contacts in Team: %1', array(1 => $team_name)));
+      CRM_Utils_System::setTitle(ts('Contacts in Team: %1', array(1 => $team["team_name"])));
 
       $form->assign('team_id', $team_id);
     }

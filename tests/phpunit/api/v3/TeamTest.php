@@ -68,6 +68,50 @@ class api_v3_TeamTest extends CiviUnitTestCase implements HeadlessInterface {
     $this->assertEquals($contactId, $result["values"][$result["id"]]["created_id"], 'Check for contact id.');
   }
 
+  /**
+   * Test domain access of teams.
+   */
+  public function testDomainAccessOfTeams() {
+    $contactId = $this->individualCreate();
+    $teamName = "Agileware Team";
+    $domainId = CRM_Core_Config::domainID();
+    $params = array(
+      "team_name"  => $teamName,
+      "domain_id"  => $domainId,
+      "is_active"  => 0,
+      "created_id" => $contactId,
+    );
+
+    $team = $this->callAPISuccess('team', 'create', $params);
+    $domainId = $this->createDomain();
+    $params["domain_id"] = $domainId;
+    $team2 = $this->callAPISuccess('team', 'create', $params);
+
+    unset($params["domain_id"]);
+    $team3 = $this->callAPISuccess('team', 'create', $params);
+
+    $teams = $this->callAPISuccess("Team","get",array());
+    $this->assertEquals(2, $teams["count"], "Should have access to only 2 teams.");
+  }
+
+  /**
+   * Test team access restriction.
+   */
+  public function testTeamRestriction() {
+    $contactId = $this->individualCreate();
+    $teamName = "Agileware Team";
+    $domainId = $this->createDomain();
+    $params = array(
+      "team_name"  => $teamName,
+      "domain_id"  => $domainId,
+      "is_active"  => 0,
+      "created_id" => $contactId,
+    );
+    $team = $this->callAPISuccess('team', 'create', $params);
+    $this->callAPIFailure("Team","getsingle",array(
+      "team_id" => $team["id"]
+    ));
+  }
 
   /**
    * Test team setting update
@@ -146,5 +190,16 @@ class api_v3_TeamTest extends CiviUnitTestCase implements HeadlessInterface {
     );
     $result = $this->callAPISuccess('team', 'delete', $params);
     $this->assertEquals(TRUE, ($result["count"] > 0), 'Check if team found.');
+  }
+
+  /**
+   * Create domain to test team access.
+   */
+  private function createDomain() {
+    $result = $this->callAPISuccess('Domain', 'create', array(
+      "name"           => "New domain name",
+      "domain_version" => "1"
+    ));
+    return $result["id"];
   }
 }
