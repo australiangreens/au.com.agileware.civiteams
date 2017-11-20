@@ -59,7 +59,7 @@ class CRM_Team_Page_Teams extends CRM_Core_Page {
     $session = CRM_Core_Session::singleton();
 
     $urlString = 'civicrm/teams';
-    $urlParams = '?reset=1';
+    $urlParams = 'reset=1';
     $url = CRM_Utils_System::url($urlString, $urlParams);
     $session->pushUserContext($url);
 
