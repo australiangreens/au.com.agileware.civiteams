@@ -155,6 +155,11 @@ function civiteams_civicrm_searchTasks($objectType, &$tasks) {
   }
 }
 
+function civiteams_civicrm_permission(&$permissions) {
+  $permissions['access civiteams']     = ts('CiviTeams') . ': ' . ts('Access Team Listing');
+  $permissions['administer civiteams'] = ts('CiviTeams') . ': ' . ts('Administer Teams');
+}
+
 /**
  * Functions below this ship commented out. Uncomment as required.
  *
@@ -175,20 +180,24 @@ function civiteams_civicrm_preProcess($formName, &$form) {
  */
 function civiteams_civicrm_navigationMenu(&$menu) {
   _civiteams_civix_insert_navigation_menu($menu, 'Contacts', array(
-    'label' => ts('Add Team', array('domain' => 'au.com.agileware.civiteams')),
-    'name' => 'add_team',
-    'url' => 'civicrm/teams/settings?action=add',
-    'permission' => 'access CiviCRM',
+    'label' => ts('Manage Teams', array('domain' => 'au.com.agileware.civiteams')),
+    'name' => 'manage_teams',
+    'url' => 'civicrm/teams',
+    'permission' => 'access civiteams,administer civiteams',
     'operator' => 'OR',
     'separator' => 2,
   ));
   _civiteams_civix_insert_navigation_menu($menu, 'Contacts', array(
-    'label' => ts('Manage Teams', array('domain' => 'au.com.agileware.civiteams')),
-    'name' => 'manage_teams',
-    'url' => 'civicrm/teams',
-    'permission' => 'access CiviCRM',
+    'label' => ts('Add Team', array('domain' => 'au.com.agileware.civiteams')),
+    'name' => 'add_team',
+    'url' => 'civicrm/teams/settings?action=add',
+    'permission' => 'administer civiteams',
     'operator' => 'OR',
     'separator' => 0,
   ));
   _civiteams_civix_navigationMenu($menu);
 } // */
+
+function civiteams_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+  $permissions['team']['get'] = array ('or' => array('access civiteams', 'administer civiteams'));
+}

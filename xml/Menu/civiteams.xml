@@ -4,12 +4,12 @@
     <path>civicrm/teams</path>
     <page_callback>CRM_Team_Page_Teams</page_callback>
     <title>Teams</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>access civiteams;administer civiteams</access_arguments>
   </item>
   <item>
     <path>civicrm/teams/settings</path>
     <page_callback>CRM_Team_Form_Settings</page_callback>
     <title>Settings</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>administer civiteams</access_arguments>
   </item>
 </menu>

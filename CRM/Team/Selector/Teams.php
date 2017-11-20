@@ -121,6 +121,10 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     $result->query($query->toSql());
 
     $permissions = array();
+    if (!CRM_Core_Permission::check('administer civiteams')) {
+      $permissions[] = CRM_Core_Action::UPDATE;
+      $permissions[] = CRM_Core_Action::DELETE;
+    }
     $mask = CRM_Core_Action::mask($permissions);
 
     while($result->fetch()){
@@ -175,12 +179,12 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
           'qs' => "reset=1&action=update&team_id=%%team_id%%{$extraParams}",
           'title' => ts('Edit Team Settings'),
         ),
-        CRM_Core_Action::DELETE => array(
+        /*CRM_Core_Action::DELETE => array(
           'name' => ts('Disable'),
           'url' => 'civicrm/teams/disable',
           'qs' => "reset=1&team_id=%%team_id%%{$extraParams}",
           'title' => ts('Disable Team'),
-        ),
+          ),*/
       );
     }
 
