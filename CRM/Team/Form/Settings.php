@@ -41,7 +41,10 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
       'team_name' => $team['team_name'],
       'enabled'   => isset($team['is_active']) ? $team['is_active'] : 1,
       'team_id'   => $this->team_id,
+      'is_domain' => !empty($team['domain_id']) ? ! $team['domain_id'] : 1,
     );
+
+    $this->add('checkbox', 'is_domain', ts('Use on any domain'));
 
     if ($this->team_id){
       CRM_Utils_System::setTitle(ts('Team Settings: %1', array(1 => $team['team_name'])));
@@ -51,9 +54,6 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
       $this->assign('is_domain', !! $team['domain_id']);
     } else {
       CRM_Utils_System::setTitle(ts('New Team'));
-
-      $this->add('checkbox', 'is_domain', ts('Use on any domain'));
-      $defaults['is_domain'] = 1;
     }
 
     // add form elements
@@ -115,8 +115,11 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
       $params['id'] = $values['team_id'];
     }
 
-    if (isset($values["is_domain"])) {
+    if (empty($values["is_domain"])) {
       $params['domain_id'] = CRM_Core_Config::domainID();
+    }
+    else {
+      $params['domain_id'] = 'null';
     }
 
     $result = civicrm_api3('Team', 'create', $params);
