@@ -68,7 +68,10 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
     if (!CRM_Core_Permission::check('administer teams')) {
       $contact_id = CRM_Core_Session::getLoggedInContactID();
       $clauses['id'][] = 'IN (SELECT team_id FROM civicrm_team_contact WHERE contact_id = ' . $contact_id . ')';
-    };
+    }
+
+    $domain_id = CRM_Core_Config::domainID();
+    $clauses['domain_id'][] = '= ' . $domain_id . 'OR domain_id IS NULL';
 
     return $clauses;
   }
