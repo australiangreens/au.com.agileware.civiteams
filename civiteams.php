@@ -172,13 +172,21 @@ function civiteams_civicrm_preProcess($formName, &$form) {
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
+ */
 function civiteams_civicrm_navigationMenu(&$menu) {
-  _civiteams_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'au.com.agileware.civiteams')),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
+  _civiteams_civix_insert_navigation_menu($menu, 'Contacts', array(
+    'label' => ts('Add Team', array('domain' => 'au.com.agileware.civiteams')),
+    'name' => 'add_team',
+    'url' => 'civicrm/teams/settings?action=add',
+    'permission' => 'access CiviCRM',
+    'operator' => 'OR',
+    'separator' => 2,
+  ));
+  _civiteams_civix_insert_navigation_menu($menu, 'Contacts', array(
+    'label' => ts('Manage Teams', array('domain' => 'au.com.agileware.civiteams')),
+    'name' => 'manage_teams',
+    'url' => 'civicrm/teams',
+    'permission' => 'access CiviCRM',
     'operator' => 'OR',
     'separator' => 0,
   ));
