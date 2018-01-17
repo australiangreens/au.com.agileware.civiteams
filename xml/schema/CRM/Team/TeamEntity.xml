@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Team</base>
+  <class>TeamEntity</class>
+  <name>civicrm_team_entity</name>
+  <comment>Entity Relationship with a Team</comment>
+  <add>4.7</add>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <title>Id</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique TeamEntity ID</comment>
+    <add>4.7</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>team_id</name>
+    <title>Team Id</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to civicrm_team</comment>
+    <add>4.7</add>
+    <pseudoconstant>
+      <table>civicrm_team</table>
+      <keyColumn>id</keyColumn>
+      <labelColumn>team_name</labelColumn>
+    </pseudoconstant>
+  </field>
+
+  <foreignKey>
+    <name>team_id</name>
+    <table>civicrm_team</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>entity_id</name>
+    <title>Entity Id</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to Entity</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>entity_name</name>
+    <type>varchar</type>
+    <required>true</required>
+    <title>Entity name</title>
+    <length>255</length>
+    <comment>Entity name</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>date_added</name>
+    <type>timestamp</type>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <title>Date Added</title>
+    <comment>Date on which the Entity was added to the team</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>date_modified</name>
+    <type>timestamp</type>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <title>Date Modified</title>
+    <comment>Date on which record is updated</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
+    <name>isactive</name>
+    <type>boolean</type>
+    <title>IsActive</title>
+    <required>true</required>
+    <comment>Indicates if the entity is currently attached with the Team.</comment>
+    <add>4.7</add>
+  </field>
+
+  <index>
+    <name>UI_team_entity_id</name>
+    <fieldName>team_id</fieldName>
+    <fieldName>entity_id</fieldName>
+    <fieldName>entity_name</fieldName>
+    <unique>true</unique>
+    <add>4.7</add>
+  </index>
+
+</table>

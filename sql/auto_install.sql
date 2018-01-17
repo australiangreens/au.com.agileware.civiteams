@@ -39,3 +39,23 @@ CREATE TABLE `civicrm_team_contact` (
      CONSTRAINT FK_civicrm_team_contact_team_id    FOREIGN KEY (`team_id`)    REFERENCES `civicrm_team`(`id`)    ON DELETE CASCADE,
      CONSTRAINT FK_civicrm_team_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+-- /*******************************************************
+-- *
+-- * civicrm_team_entity
+-- *
+-- * Entity Relationship with a Team
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_team_entity` (
+     `id`            int unsigned NOT NULL AUTO_INCREMENT        COMMENT 'Unique TeamEntity ID',
+     `team_id`       int unsigned NOT NULL                       COMMENT 'FK to civicrm_team',
+     `entity_id`     int unsigned NOT NULL                       COMMENT 'FK to Entity',
+     `entity_name`   varchar(255) NOT NULL                       COMMENT 'Entity name',
+     `date_added`    timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which the Entity was added to the team',
+     `date_modified` timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which record is updated',
+     `isactive`      tinyint      NOT NULL DEFAULT 1             COMMENT 'Indicates if the entity is currently attached with the Team.',
+     PRIMARY KEY (`id`),
+     UNIQUE INDEX `UI_team_entity_id` (`team_id`, `entity_id`, `entity_name`),
+     CONSTRAINT FK_civicrm_team_entity_team_id    FOREIGN KEY (`team_id`)    REFERENCES `civicrm_team`(`id`)    ON DELETE CASCADE
+)  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
