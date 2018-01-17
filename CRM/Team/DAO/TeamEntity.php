@@ -143,11 +143,6 @@ class CRM_Team_DAO_TeamEntity extends CRM_Core_DAO {
           'bao' => 'CRM_Team_DAO_TeamEntity',
           'localizable' => 0,
           'FKClassName' => 'CRM_Team_DAO_Team',
-          'pseudoconstant' => array(
-            'table' => 'civicrm_team',
-            'keyColumn' => 'id',
-            'labelColumn' => 'team_name',
-          )
         ) ,
         'entity_id' => array(
           'name' => 'entity_id',
