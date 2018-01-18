@@ -155,11 +155,11 @@ class CRM_Team_DAO_TeamEntity extends CRM_Core_DAO {
           'bao' => 'CRM_Team_DAO_TeamEntity',
           'localizable' => 0,
         ) ,
-        'entity_title' => array(
-          'name' => 'entity_title',
+        'entity_table' => array(
+          'name' => 'entity_table',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Entity Title') ,
-          'description' => 'Entity Title',
+          'title' => ts('Entity Table') ,
+          'description' => 'Entity Table',
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -268,11 +268,11 @@ class CRM_Team_DAO_TeamEntity extends CRM_Core_DAO {
         'field' => array(
           0 => 'team_id',
           1 => 'entity_id',
-          2 => 'entity_title',
+          2 => 'entity_table',
         ) ,
         'localizable' => false,
         'unique' => true,
-        'sig' => 'civicrm_team_entity::1::team_id::entity_id::entity_title',
+        'sig' => 'civicrm_team_entity::1::team_id::entity_id::entity_table',
       ) ,
     );
     return ($localize && !empty($indices)) ? CRM_Core_DAO_AllCoreTables::multilingualize(__CLASS__, $indices) : $indices;

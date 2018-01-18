@@ -53,7 +53,7 @@ CREATE TABLE `civicrm_team_entity` (
      `entity_id`     int unsigned NOT NULL                       COMMENT 'FK to Entity',
      `entity_table`  varchar(255) NOT NULL                       COMMENT 'Entity table',
      `date_added`    timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which the Entity was added to the team',
-     `date_modified` timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which record is updated',
+     `date_modified` timestamp    NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date on which record is updated',
      `isactive`      tinyint      NOT NULL DEFAULT 1             COMMENT 'Indicates if the entity is currently attached with the Team.',
      PRIMARY KEY (`id`),
      UNIQUE INDEX `UI_team_entity_id` (`team_id`, `entity_id`, `entity_table`),

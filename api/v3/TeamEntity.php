@@ -16,9 +16,31 @@ function _civicrm_api3_team_entity_create_spec(&$spec) {
         'type' => CRM_Utils_Type::T_INT,
     );
 
-    $spec['entity_title'] = array(
+    $spec['entity_table'] = array(
         'api.required' => 1,
-        'title' => 'Entity Title',
+        'title' => 'Entity Table',
+        'type' => CRM_Utils_Type::T_STRING,
+    );
+}
+
+function _civicrm_api3_team_entity_get_spec(&$spec) {
+    $spec['team_id'] = array(
+        'api.required' => 0,
+        'title' => 'Team ID',
+        'type' => CRM_Utils_Type::T_INT,
+        'FKClassName' => 'CRM_Team_DAO_Team',
+        'FKApiName' => 'Team',
+    );
+
+    $spec['entity_id'] = array(
+        'api.required' => 0,
+        'title' => 'Entity ID',
+        'type' => CRM_Utils_Type::T_INT,
+    );
+
+    $spec['entity_table'] = array(
+        'api.required' => 0,
+        'title' => 'Entity Table',
         'type' => CRM_Utils_Type::T_STRING,
     );
 }
