@@ -69,11 +69,11 @@ class CRM_Team_DAO_TeamEntity extends CRM_Core_DAO {
    */
   public $entity_id;
   /**
-   * Entity name
+   * Entity table
    *
    * @var string
    */
-  public $entity_name;
+  public $entity_table;
   /**
    * Date on which the Entity was added to the team
    *
@@ -155,11 +155,11 @@ class CRM_Team_DAO_TeamEntity extends CRM_Core_DAO {
           'bao' => 'CRM_Team_DAO_TeamEntity',
           'localizable' => 0,
         ) ,
-        'entity_name' => array(
-          'name' => 'entity_name',
+        'entity_title' => array(
+          'name' => 'entity_title',
           'type' => CRM_Utils_Type::T_STRING,
-          'title' => ts('Entity name') ,
-          'description' => 'Entity name',
+          'title' => ts('Entity Title') ,
+          'description' => 'Entity Title',
           'required' => true,
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
@@ -268,11 +268,11 @@ class CRM_Team_DAO_TeamEntity extends CRM_Core_DAO {
         'field' => array(
           0 => 'team_id',
           1 => 'entity_id',
-          2 => 'entity_name',
+          2 => 'entity_title',
         ) ,
         'localizable' => false,
         'unique' => true,
-        'sig' => 'civicrm_team_entity::1::team_id::entity_id::entity_name',
+        'sig' => 'civicrm_team_entity::1::team_id::entity_id::entity_title',
       ) ,
     );
     return ($localize && !empty($indices)) ? CRM_Core_DAO_AllCoreTables::multilingualize(__CLASS__, $indices) : $indices;

@@ -24,9 +24,9 @@ function setAssignUnassignParams(&$spec, $isForAssign = 1) {
         'type' => CRM_Utils_Type::T_INT,
     );
 
-    $spec['entity_name'] = array(
+    $spec['entity_title'] = array(
         'api.required' => 1,
-        'title' => 'Entity Name',
+        'title' => 'Entity Title',
         'type' => CRM_Utils_Type::T_STRING,
     );
 }
@@ -38,9 +38,9 @@ function _civicrm_api3_team_entity_getmodifiedentities_spec(&$spec) {
         'type' => CRM_Utils_Type::T_TIMESTAMP,
     );
 
-    $spec['entity_name'] = array(
+    $spec['entity_title'] = array(
         'api.required' => 0,
-        'title' => 'Entity Name',
+        'title' => 'Entity Title',
         'type' => CRM_Utils_Type::T_STRING,
     );
 
@@ -64,7 +64,7 @@ function civicrm_api3_team_entity_assign($params) {
     $createparams = array(
         "team_id"     => $params["team_id"],
         "entity_id"   => $params["entity_id"],
-        "entity_name" => $params["entity_name"],
+        "entity_title" => $params["entity_title"],
         "sequential"  => 1,
     );
     $teamentity = _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $createparams);
@@ -93,7 +93,7 @@ function civicrm_api3_team_entity_assign($params) {
 function civicrm_api3_team_entity_unassign($params) {
     $getparams = array(
         "entity_id"     => $params["entity_id"],
-        "entity_name"   => $params["entity_name"],
+        "entity_title"   => $params["entity_title"],
         "sequential"    => 1,
     );
 
@@ -143,8 +143,8 @@ function civicrm_api3_team_entity_getmodifiedentities($params) {
         "sequential"    => 1,
     );
 
-    if(isset($params["entity_name"])) {
-        $getparams["entity_name"] = $params["entity_name"];
+    if(isset($params["entity_title"])) {
+        $getparams["entity_title"] = $params["entity_title"];
     }
 
     if(isset($params["team_id"])) {

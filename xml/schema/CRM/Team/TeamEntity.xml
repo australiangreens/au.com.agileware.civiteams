@@ -53,12 +53,12 @@
   </field>
 
   <field>
-    <name>entity_name</name>
+    <name>entity_table</name>
     <type>varchar</type>
     <required>true</required>
-    <title>Entity name</title>
+    <title>Entity table</title>
     <length>255</length>
-    <comment>Entity name</comment>
+    <comment>Entity table</comment>
     <add>4.7</add>
   </field>
 
@@ -95,7 +95,7 @@
     <name>UI_team_entity_id</name>
     <fieldName>team_id</fieldName>
     <fieldName>entity_id</fieldName>
-    <fieldName>entity_name</fieldName>
+    <fieldName>entity_table</fieldName>
     <unique>true</unique>
     <add>4.7</add>
   </index>
