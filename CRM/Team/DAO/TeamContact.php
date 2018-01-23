@@ -75,6 +75,12 @@ class CRM_Team_DAO_TeamContact extends CRM_Core_DAO {
    */
   public $date_added;
   /**
+   * Date on which record is updated
+   *
+   * @var timestamp
+   */
+  public $date_modified;
+  /**
    * Indicates if the contact is currently participating in the Team.
    *
    * @var boolean
@@ -147,6 +153,18 @@ class CRM_Team_DAO_TeamContact extends CRM_Core_DAO {
           'type' => CRM_Utils_Type::T_TIMESTAMP,
           'title' => ts('Date Added') ,
           'description' => 'Date on which the Contact was added to the team',
+          'required' => false,
+          'default' => 'CURRENT_TIMESTAMP',
+          'table_name' => 'civicrm_team_contact',
+          'entity' => 'TeamContact',
+          'bao' => 'CRM_Team_DAO_TeamContact',
+          'localizable' => 0,
+        ) ,
+        'date_modified' => array(
+          'name' => 'date_modified',
+          'type' => CRM_Utils_Type::T_TIMESTAMP,
+          'title' => ts('Date Modified') ,
+          'description' => 'Date on which record is updated',
           'required' => false,
           'default' => 'CURRENT_TIMESTAMP',
           'table_name' => 'civicrm_team_contact',

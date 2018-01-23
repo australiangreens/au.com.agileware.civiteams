@@ -18,7 +18,7 @@ CREATE TABLE `civicrm_team` (
      `data`       text         NULL                           COMMENT 'Serialised JSON of additional configuration.',
      PRIMARY KEY (`id`),
      CONSTRAINT FK_civicrm_team_domain_id  FOREIGN KEY (`domain_id`)  REFERENCES `civicrm_domain`(`id`)  ON DELETE CASCADE,
-     CONSTRAINT FK_civicrm_team_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL  
+     CONSTRAINT FK_civicrm_team_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- /*******************************************************
@@ -33,11 +33,12 @@ CREATE TABLE `civicrm_team_contact` (
      `team_id`    int unsigned NOT NULL                       COMMENT 'FK to civicrm_team',
      `contact_id` int unsigned NOT NULL                       COMMENT 'FK to Contact',
      `date_added` timestamp    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date on which the Contact was added to the team',
+     `date_modified` timestamp    NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date on which record is updated',
      `status`     tinyint      NOT NULL                       COMMENT 'Indicates if the contact is currently participating in the Team.',
      PRIMARY KEY (`id`),
      UNIQUE INDEX `UI_team_contact_id` (`team_id`, `contact_id`),
      CONSTRAINT FK_civicrm_team_contact_team_id    FOREIGN KEY (`team_id`)    REFERENCES `civicrm_team`(`id`)    ON DELETE CASCADE,
-     CONSTRAINT FK_civicrm_team_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE  
+     CONSTRAINT FK_civicrm_team_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- /*******************************************************

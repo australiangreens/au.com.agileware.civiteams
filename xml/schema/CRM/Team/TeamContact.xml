@@ -66,6 +66,16 @@
   </field>
 
   <field>
+    <name>date_modified</name>
+    <type>timestamp</type>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <title>Date Modified</title>
+    <comment>Date on which record is updated</comment>
+    <add>4.7</add>
+  </field>
+
+  <field>
     <name>status</name>
     <type>boolean</type>
     <title>Status</title>
