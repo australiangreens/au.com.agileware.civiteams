@@ -46,16 +46,21 @@ class CRM_Team_Form_RemoveContacts extends CRM_Contact_Form_Task {
     $deletable = civicrm_api3(
       'TeamContact', 'get',
       array(
+        'sequential' => 1,
         'team_id' => $params['team_id'],
         'contact_id' => array('IN' => $this->_contactIds),
-        'return' => 'id',
         'options' => array('limit' => 0),
       )
     );
 
-    foreach(array_keys($deletable['values']) as $delid) {
+    foreach($deletable['values'] as $deletecontact) {
       $deleted++;
-      civicrm_api3('TeamContact', 'delete', array('id' => $delid));
+      civicrm_api3('TeamContact', 'create', array(
+          'id'         => $deletecontact["id"],
+          'team_id'    => $deletecontact["team_id"],
+          'contact_id' => $deletecontact["contact_id"],
+          'status'     => 0
+      ));
     }
 
     $status = array(

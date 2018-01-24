@@ -18,10 +18,10 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
     $this->_query = CRM_Utils_SQL_Select::from("`$t` t")
       ->join('tc', "LEFT JOIN `$tc` tc on t.id = tc.team_id");
 
-    $this->_select = array('t.id', 't.team_name', 't.is_active', 'COUNT(tc.id) AS members');
+    $this->_select = array('t.id', 't.team_name', 't.is_active', 'COUNT(case tc.status when 1 then 1 else null end) AS members');
     $this->_groupBy = array('t.id');
     $this->where(array(
-      "t.domain_id = #id OR t.domain_id IS NULL"
+      "t.domain_id = #id OR t.domain_id IS NULL",
     ), array(
       "id" => CRM_Core_Config::domainID()
     ));
