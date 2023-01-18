@@ -69,13 +69,7 @@ function civiteams_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
 function civiteams_civicrm_entityTypes(&$entityTypes) {
-  $entityFiles = _civiteams_civix_find_files(__DIR__, '*.entityType.php');
-  foreach ($entityFiles as $file) {
-    $et = include $file;
-    foreach ($et as $e) {
-      $entityTypes[$e['class']] = $e;
-    }
-  }
+  _civiteams_civix_civicrm_entityTypes($entityTypes);
 }
 
 /**
