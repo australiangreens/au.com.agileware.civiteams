@@ -21,15 +21,6 @@ function civiteams_civicrm_install() {
 }
 
 /**
- * Implements hook_civicrm_uninstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
- */
-function civiteams_civicrm_uninstall() {
-  _civiteams_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
@@ -39,37 +30,12 @@ function civiteams_civicrm_enable() {
 }
 
 /**
- * Implements hook_civicrm_disable().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
- */
-function civiteams_civicrm_disable() {
-  _civiteams_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @param $op string, the type of operation being performed; 'check' or 'enqueue'
- * @param $queue CRM_Queue_Queue, (for 'enqueue') the modifiable list of pending up upgrade tasks
- *
- * @return mixed
- *   Based on op. for 'check', returns array(boolean) (TRUE if upgrades are pending)
- *                for 'enqueue', returns void
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
- */
-function civiteams_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _civiteams_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
  * Implements hook_civicrm_entityTypes().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
 function civiteams_civicrm_entityTypes(&$entityTypes) {
-  $entityFiles = _civiteams_civix_find_files(__DIR__, '*.entityType.php');
+  $entityFiles = CRM_Utils_File::findFiles(__DIR__, '*.entityType.php');
   foreach ($entityFiles as $file) {
     $et = include $file;
     foreach ($et as $e) {
@@ -138,15 +104,6 @@ function civiteams_civicrm_navigationMenu(&$menu) {
 
 function civiteams_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
   $permissions['team']['get'] = array ('or' => array('access civiteams', 'administer civiteams'));
-}
-
-/**
- * Implements hook_civicrm_postInstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
- */
-function civiteams_civicrm_postInstall() {
-  _civiteams_civix_civicrm_postInstall();
 }
 
 // /**

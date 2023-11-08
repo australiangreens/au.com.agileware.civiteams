@@ -1,5 +1,7 @@
 <?php
 
+use Civi\Api4\Managed;
+
 class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core_Selector_API {
   static $_columnHeaders;
   static $_links;
@@ -53,7 +55,7 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
   }
 
   public function having($exprs, $args = NULL) {
-    return $this->_query->having($name, $exprs, $args);
+    return $this->_query->having($exprs, $args);
   }
 
   public function addColumn($sort, $name, $expr = NULL, $direction = CRM_Utils_Sort::DONTCARE) {
@@ -161,16 +163,21 @@ class CRM_Team_Selector_Teams extends CRM_Core_Selector_Base implements CRM_Core
 
   public static function &links() {
     if(!(self::$_links)) {
-      list($key) = func_get_args();
+      [$key] = func_get_args();
       $extraParams = ($key) ? "&key={$key}" : NULL;
 
-      $cs = CRM_Core_ManagedEntities::get('au.com.agileware.civiteams', 'CRM_Team_Form_Search_TeamContacts');
+      $csid = Managed::get(FALSE)
+                   ->addWhere('module', '=', 'au.com.agileware.civiteams')
+                   ->addWhere('name', '=', 'CRM_Team_Form_Search_TeamContacts')
+                   ->addSelect('entity_id')
+                   ->execute()
+                   ->first()['entity_id'];
 
       self::$_links = array(
         CRM_Core_Action::VIEW => array(
           'name' => ts('Contacts'),
           'url' => 'civicrm/contact/search/custom',
-          'qs' => "reset=1&force=1&team_id=%%team_id%%&csid={$cs['value']}{$extraParams}",
+          'qs' => "reset=1&force=1&team_id=%%team_id%%&csid={$csid}{$extraParams}",
           'title' => ts('List Member Contacts'),
           ),
         CRM_Core_Action::UPDATE => array(
