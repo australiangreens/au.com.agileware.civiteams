@@ -181,6 +181,7 @@ function _civiteams_civix_civicrm_disable(): void {
     if (is_callable([$upgrader, 'onDisable'])) {
       $upgrader->onDisable();
     }
+    return CRM_Core_Resources::singleton()->getUrl(self::LONG_NAME, $file);
   }
 }
 
@@ -212,7 +213,6 @@ function _civiteams_civix_upgrader() {
   else {
     return CRM_Team_Upgrader_Base::instance();
   }
-}
 
 /**
  * Inserts a navigation menu item at a given place in the hierarchy.

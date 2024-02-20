@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
   <base>CRM/Team</base>
-  <class>TeamContact</class>
-  <name>civicrm_team_contact</name>
-  <comment>Contact Membership in a Team</comment>
+  <class>TeamEntity</class>
+  <name>civicrm_team_entity</name>
+  <comment>Entity Relationship with a Team</comment>
   <add>4.7</add>
   <log>true</log>
 
   <field>
     <name>id</name>
+    <title>Id</title>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>Unique TeamContact ID</comment>
+    <comment>Unique TeamEntity ID</comment>
     <add>4.7</add>
   </field>
   <primaryKey>
@@ -22,6 +23,7 @@
 
   <field>
     <name>team_id</name>
+    <title>Team Id</title>
     <type>int unsigned</type>
     <required>true</required>
     <comment>FK to civicrm_team</comment>
@@ -32,6 +34,7 @@
       <labelColumn>team_name</labelColumn>
     </pseudoconstant>
   </field>
+
   <foreignKey>
     <name>team_id</name>
     <table>civicrm_team</table>
@@ -41,19 +44,23 @@
   </foreignKey>
 
   <field>
-    <name>contact_id</name>
+    <name>entity_id</name>
+    <title>Entity Id</title>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>FK to Contact</comment>
+    <comment>FK to Entity</comment>
     <add>4.7</add>
   </field>
-  <foreignKey>
-    <name>contact_id</name>
-    <table>civicrm_contact</table>
-    <key>id</key>
+
+  <field>
+    <name>entity_table</name>
+    <type>varchar</type>
+    <required>true</required>
+    <title>Entity table</title>
+    <length>255</length>
+    <comment>Entity table</comment>
     <add>4.7</add>
-    <onDelete>CASCADE</onDelete>
-  </foreignKey>
+  </field>
 
   <field>
     <name>date_added</name>
@@ -61,7 +68,7 @@
     <required>false</required>
     <default>CURRENT_TIMESTAMP</default>
     <title>Date Added</title>
-    <comment>Date on which the Contact was added to the team</comment>
+    <comment>Date on which the Entity was added to the team</comment>
     <add>4.7</add>
   </field>
 
@@ -76,18 +83,19 @@
   </field>
 
   <field>
-    <name>status</name>
+    <name>isactive</name>
     <type>boolean</type>
-    <title>Status</title>
+    <title>IsActive</title>
     <required>true</required>
-    <comment>Indicates if the contact is currently participating in the Team.</comment>
+    <comment>Indicates if the entity is currently attached with the Team.</comment>
     <add>4.7</add>
   </field>
 
   <index>
-    <name>UI_team_contact_id</name>
+    <name>UI_team_entity_id</name>
     <fieldName>team_id</fieldName>
-    <fieldName>contact_id</fieldName>
+    <fieldName>entity_id</fieldName>
+    <fieldName>entity_table</fieldName>
     <unique>true</unique>
     <add>4.7</add>
   </index>

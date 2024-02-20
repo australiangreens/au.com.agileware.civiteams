@@ -11,7 +11,7 @@ class CRM_Team_BAO_TeamContact extends CRM_Team_DAO_TeamContact {
    */
 
   public static function create($params) {
-    if(empty($params) || empty($params["contact_id"]) || empty($params["team_id"]) || empty($params["status"])) {
+    if(empty($params) || empty($params["contact_id"]) || empty($params["team_id"]) || !isset($params["status"])) {
       return NULL;
     }
 
