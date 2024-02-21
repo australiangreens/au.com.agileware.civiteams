@@ -163,6 +163,7 @@ class CRM_Team_Form_Search_TeamContacts extends CRM_Contact_Form_Search_Custom_B
     $count  = 1;
     $clause = array();
     $team_id = CRM_Utils_request::retrieve('team_id', 'Integer');
+    $clause[] = "team_contact.status = 1";
 
     if ($team_id != NULL) {
       $params[$count] = array($team_id, 'Integer');

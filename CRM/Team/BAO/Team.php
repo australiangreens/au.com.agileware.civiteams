@@ -62,8 +62,8 @@ class CRM_Team_BAO_Team extends CRM_Team_DAO_Team {
     return $team;
   }
 
-  public function addSelectWhereClause() {
-    $clauses = parent::addSelectWhereClause();
+  public function addSelectWhereClause(string $entityName = NULL, int $userId = NULL, array $conditions = []): array {
+    $clauses = parent::addSelectWhereClause($entityName, $userId, $conditions);
 
     if (!CRM_Core_Permission::check('administer civiteams', 'access civiteams')) {
       $contact_id = CRM_Core_Session::getLoggedInContactID();

@@ -89,7 +89,7 @@ class CRM_Team_Selector_TeamContacts extends CRM_Core_Selector_Base implements C
   }
 
   public function having($exprs, $args = NULL) {
-    return $this->_query->having($name, $exprs, $args);
+    return $this->_query->having($exprs, $args);
   }
 
   public function addColumn($sort, $name, $expr = NULL, $direction = CRM_Utils_Sort::DONTCARE) {
