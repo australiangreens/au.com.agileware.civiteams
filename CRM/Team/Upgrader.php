@@ -44,7 +44,7 @@ class CRM_Team_Upgrader extends CRM_Extension_Upgrader_Base {
    */
   public function upgrade_1200(): bool {
     $this->ctx->log->info('Applying update 1200 - Modify Team Contact to add new field and add in team entity');
-    $this->addColumn('civicrm_team_contact', 'date_modified', "NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date on which record is updated'");
+    $this->addColumn('civicrm_team_contact', 'date_modified', "timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date on which record is updated'");
     if (!CRM_Core_DAO::singleValueQuery("SHOW TABLES LIKE 'civicrm_team_entity'")) {
       CRM_Core_DAO::executeQuery("
 CREATE TABLE `civicrm_team_entity` (
