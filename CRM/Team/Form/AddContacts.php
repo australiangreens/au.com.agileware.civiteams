@@ -38,8 +38,18 @@ class CRM_Team_Form_AddContacts extends CRM_Contact_Form_Task {
     $teamName = civicrm_api3('Team', 'getvalue', array('id' => $params['team_id'], 'return' => 'team_name'));
 
     foreach($this->_contactIds as $cid) {
-      if (civicrm_api3('TeamContact', 'getcount', array('team_id' => $params['team_id'], 'contact_id' => $cid))) {
-        $existing++;
+      $teamContact = civicrm_api3('TeamContact', 'get', array('team_id' => $params['team_id'],'sequential' => 1, 'contact_id' => $cid));
+      if ($teamContact["count"] > 0) {
+        $teamContact = $teamContact["values"][0];
+        if($teamContact["status"] == 1) {
+            $existing++;
+        } else {
+            $teamContact["status"] = 1;
+            unset($teamContact["date_added"]);
+            unset($teamContact["date_modified"]);
+            civicrm_api3('TeamContact', 'create', $teamContact);
+            $added++;
+        }
       }
       else {
         civicrm_api3('TeamContact', 'create', array('team_id' => $params['team_id'], 'contact_id' => $cid, 'status' => 1));

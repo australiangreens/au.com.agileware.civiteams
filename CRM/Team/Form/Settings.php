@@ -1,5 +1,7 @@
 <?php
 
+use Civi\Api4\Managed;
+
 require_once 'CRM/Core/Form.php';
 
 /**
@@ -34,8 +36,13 @@ class CRM_Team_Form_Settings extends CRM_Core_Form {
     $this->assign('descriptions', $this->descriptions);
     $this->assign('baseURL',      CRM_Core_Config::singleton()->userFrameworkBaseURL);
 
-    $cs = CRM_Core_ManagedEntities::get('au.com.agileware.civiteams', 'CRM_Team_Form_Search_TeamContacts');
-    $this->assign('csid', $cs['value']);
+    $csid = Managed::get(FALSE)
+                   ->addWhere('module', '=', 'au.com.agileware.civiteams')
+                   ->addWhere('name', '=','CRM_Team_Form_Search_TeamContacts')
+                   ->addSelect('entity_id')
+                   ->execute()
+                   ->first()['entity_id'];
+    $this->assign('csid', $csid);
 
     $defaults = array (
       'team_name' => $team['team_name'],

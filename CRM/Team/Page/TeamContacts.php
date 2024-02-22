@@ -34,7 +34,7 @@ class CRM_Team_Page_TeamContacts extends CRM_Core_Page {
 
     if(!($s_selector && ($this->selector = unserialize($s_selector)) instanceof CRM_Team_Selector_Teams)){
       $this->selector = new CRM_Team_Selector_TeamContacts();
-     }
+    }
 
     $this->selector->where('team_id = @team_id', array('team_id' => $team_id));
 
