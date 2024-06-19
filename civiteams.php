@@ -1,6 +1,7 @@
 <?php
 
 require_once 'civiteams.civix.php';
+use CRM_Team_ExtensionUtil as E;
 
 /**
  * Implements hook_civicrm_config().
@@ -46,8 +47,12 @@ function civiteams_civicrm_searchTasks($objectType, &$tasks) {
 }
 
 function civiteams_civicrm_permission(&$permissions) {
-  $permissions['access civiteams']     = ts('CiviTeams') . ': ' . ts('Access Team Listing');
-  $permissions['administer civiteams'] = ts('CiviTeams') . ': ' . ts('Administer Teams');
+  $permissions['access civiteams'] = [
+    'label' => E::ts('CiviTeams') . ': ' . E::ts('Access Team Listing'),
+  ];
+  $permissions['administer civiteams'] = [
+    'label' => E::ts('CiviTeams') . ': ' . E::ts('Administer Teams'),
+  ];
 }
 
 /**
